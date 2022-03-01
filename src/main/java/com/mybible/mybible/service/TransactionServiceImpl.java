@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -21,5 +22,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
+    }
+
+    @Override
+    public Optional<Transaction> getTransaction(Long id) {
+        return transactionRepository.findById(id);
     }
 }

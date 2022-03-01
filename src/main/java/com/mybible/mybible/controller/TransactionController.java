@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/transaction")
@@ -23,6 +24,11 @@ public class TransactionController {
     @GetMapping("/getAll")
     public List<Transaction> getAllTransactions(){
         return transactionService.getAllTransactions();
+    }
+
+    @RequestMapping("/{id}")
+    public Optional<Transaction> getTransaction(@PathVariable Long id){
+        return transactionService.getTransaction(id);
     }
 
 }
