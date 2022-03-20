@@ -17,9 +17,9 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("/add")
-    public String add(@RequestBody Transaction transaction){
-        transactionService.saveTransaction(transaction);
-        return "New transaction added";
+    public Transaction add(@RequestBody Transaction transaction){
+        return transactionService.saveTransaction(transaction);
+
     }
 
     @GetMapping("/getAll")
@@ -33,9 +33,8 @@ public class TransactionController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction){
-        transactionService.updateTransaction(id, transaction);
-        return "Transaction updated";
+    public Transaction updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction){
+        return transactionService.updateTransaction(id, transaction);
     }
 
 }
