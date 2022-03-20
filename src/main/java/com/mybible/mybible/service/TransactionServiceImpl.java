@@ -28,4 +28,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Optional<Transaction> getTransaction(Long id) {
         return transactionRepository.findById(id);
     }
+
+    @Override
+    public Transaction updateTransaction(Long id, Transaction transaction) {
+        return transactionRepository.save(transaction);
+    }
 }

@@ -32,4 +32,10 @@ public class TransactionController {
         return transactionService.getTransaction(id);
     }
 
+    @PutMapping("/update/{id}")
+    public String updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction){
+        transactionService.updateTransaction(id, transaction);
+        return "Transaction updated";
+    }
+
 }

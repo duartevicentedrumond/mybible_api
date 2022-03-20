@@ -10,4 +10,5 @@ public interface TransactionService {
     public Transaction saveTransaction(Transaction transaction);
     public List<Transaction> getAllTransactions();
     public Optional<Transaction> getTransaction(Long id);
+    public Transaction updateTransaction(Long id, Transaction transaction);
 }
