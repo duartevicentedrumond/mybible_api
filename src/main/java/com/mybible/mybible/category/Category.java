@@ -28,7 +28,8 @@ public class Category {
     @Column(
             name = "description",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "TEXT",
+            updatable = true
     )
     private String description;
 

@@ -1,8 +1,5 @@
 package com.mybible.mybible.category;
 
-import com.mybible.mybible.category.Category;
-import com.mybible.mybible.category.CategoryRepository;
-import com.mybible.mybible.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +30,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category updateCategory(Long categoryId, Category category) {
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public void deleteCategory(Long categoryId) {
+        categoryRepository.deleteById(categoryId);
     }
 }
