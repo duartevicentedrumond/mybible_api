@@ -1,6 +1,7 @@
 package com.mybible.mybible.transaction;
 
 import com.fasterxml.jackson.annotation.*;
+import com.mybible.mybible.Type.Type;
 import com.mybible.mybible.category.Category;
 
 import javax.persistence.*;
@@ -53,11 +54,9 @@ public class Transaction {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(
-            name = "type",
-            nullable = false
-    )
-    private Integer type;
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private Type type;
 
     public Transaction() {
     }
@@ -66,7 +65,7 @@ public class Transaction {
                        Date date,
                        Double amount,
                        Category category,
-                       Integer type) {
+                       Type type) {
         this.description = description;
         this.date = date;
         this.amount = amount;
@@ -114,11 +113,11 @@ public class Transaction {
         this.category = category;
     }
 
-    public Integer getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
