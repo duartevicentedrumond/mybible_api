@@ -1,7 +1,8 @@
-package com.mybible.mybible.transaction.service;
+package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.transaction.model.Transaction;
-import com.mybible.mybible.transaction.repository.TransactionRepository;
+import com.mybible.mybible.transaction.Transaction;
+import com.mybible.mybible.transaction.TransactionRepository;
+import com.mybible.mybible.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

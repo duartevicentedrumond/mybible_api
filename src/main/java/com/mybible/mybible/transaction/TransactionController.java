@@ -1,13 +1,9 @@
-package com.mybible.mybible.transaction.controller;
+package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.category.model.Category;
-import com.mybible.mybible.transaction.model.Transaction;
-import com.mybible.mybible.transaction.service.TransactionService;
-import com.mybible.mybible.category.service.CategoryService;
+import com.mybible.mybible.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.Attribute;
 import java.util.List;
 import java.util.Optional;
 

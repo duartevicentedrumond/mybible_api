@@ -1,6 +1,6 @@
-package com.mybible.mybible.category.service;
+package com.mybible.mybible.category;
 
-import com.mybible.mybible.category.model.Category;
+import com.mybible.mybible.category.Category;
 
 import java.util.List;
 import java.util.Optional;

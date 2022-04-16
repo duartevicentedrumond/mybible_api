@@ -1,7 +1,8 @@
-package com.mybible.mybible.category.service;
+package com.mybible.mybible.category;
 
-import com.mybible.mybible.category.model.Category;
-import com.mybible.mybible.category.repository.CategoryRepository;
+import com.mybible.mybible.category.Category;
+import com.mybible.mybible.category.CategoryRepository;
+import com.mybible.mybible.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

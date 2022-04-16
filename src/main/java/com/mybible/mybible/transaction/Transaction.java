@@ -1,11 +1,10 @@
-package com.mybible.mybible.transaction.model;
+package com.mybible.mybible.transaction;
 
 import com.fasterxml.jackson.annotation.*;
-import com.mybible.mybible.category.model.Category;
+import com.mybible.mybible.category.Category;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Optional;
 
 import static javax.persistence.GenerationType.*;
 

@@ -1,6 +1,6 @@
-package com.mybible.mybible.category.repository;
+package com.mybible.mybible.category;
 
-import com.mybible.mybible.category.model.Category;
+import com.mybible.mybible.category.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

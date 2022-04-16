@@ -1,6 +1,6 @@
-package com.mybible.mybible.transaction.repository;
+package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.transaction.model.Transaction;
+import com.mybible.mybible.transaction.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

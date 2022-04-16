@@ -1,12 +1,6 @@
-package com.mybible.mybible.category.model;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mybible.mybible.transaction.model.Transaction;
+package com.mybible.mybible.category;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 

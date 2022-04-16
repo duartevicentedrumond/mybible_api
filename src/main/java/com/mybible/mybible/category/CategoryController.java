@@ -1,7 +1,5 @@
-package com.mybible.mybible.category.controller;
+package com.mybible.mybible.category;
 
-import com.mybible.mybible.category.model.Category;
-import com.mybible.mybible.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

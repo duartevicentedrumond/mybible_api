@@ -1,6 +1,6 @@
-package com.mybible.mybible.transaction.service;
+package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.transaction.model.Transaction;
+import com.mybible.mybible.transaction.Transaction;
 
 import java.util.List;
 import java.util.Optional;
