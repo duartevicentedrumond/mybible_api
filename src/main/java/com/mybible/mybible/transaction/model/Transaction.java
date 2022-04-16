@@ -1,9 +1,11 @@
 package com.mybible.mybible.transaction.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
+import com.mybible.mybible.category.model.Category;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Optional;
 
 import static javax.persistence.GenerationType.*;
 
@@ -27,29 +29,31 @@ public class Transaction {
             insertable = false
     )
     private Long transactionId;
+
     @Column(
             name = "description",
             nullable = false,
             columnDefinition = "TEXT"
     )
     private String description;
+
     @Column(
             name = "date",
             nullable = false
     )
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
+
     @Column(
             name = "amount",
             nullable = false
     )
     private Double amount;
-    @Column(
-            name = "category",
-            nullable = false,
-            precision = 2
-    )
-    private Integer category;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Column(
             name = "type",
             nullable = false
@@ -62,7 +66,7 @@ public class Transaction {
     public Transaction(String description,
                        Date date,
                        Double amount,
-                       Integer category,
+                       Category category,
                        Integer type) {
         this.description = description;
         this.date = date;
@@ -103,11 +107,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Integer getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
