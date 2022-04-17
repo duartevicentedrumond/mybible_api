@@ -10,4 +10,5 @@ public interface TransactionService {
     Optional<Transaction> getTransaction(Long transactionId);
     Transaction updateTransaction(Long transactionId, Transaction transaction);
     List<Object[]> getSumByCategory();
+    void deleteTransaction(Long transactionId);
 }

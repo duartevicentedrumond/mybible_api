@@ -35,4 +35,9 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Object[]> getSumByCategory() {
         return transactionRepository.getSumByCategory();
     }
+
+    @Override
+    public void deleteTransaction(Long transactionId) {
+        transactionRepository.deleteById(transactionId);
+    }
 }

@@ -41,6 +41,11 @@ public class TransactionController {
         return transactionService.updateTransaction(transactionId, transaction);
     }
 
+    @DeleteMapping("/delete/{transactionId}")
+    public void deleteTransaction(@PathVariable Long transactionId){
+        transactionService.deleteTransaction(transactionId);
+    }
+
     @GetMapping("/getSumByCategory")
     public List<SumByCategory> getSumByCategory(){
 
