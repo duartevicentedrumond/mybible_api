@@ -19,15 +19,12 @@ public class Category {
     )
     @Column(
             name = "category_id",
-            updatable = false,
-            unique = true,
-            insertable = false
+            unique = true
     )
     private Long categoryId;
 
     @Column(
             name = "description",
-            nullable = false,
             columnDefinition = "TEXT",
             updatable = true
     )

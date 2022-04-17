@@ -1,8 +1,5 @@
 package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.transaction.Transaction;
-import com.mybible.mybible.transaction.TransactionRepository;
-import com.mybible.mybible.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +30,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction updateTransaction(Long transactionId, Transaction transaction) {
         return transactionRepository.save(transaction);
+    }
+    @Override
+    public List<Object[]> getSumByCategory() {
+        return transactionRepository.getSumByCategory();
     }
 }

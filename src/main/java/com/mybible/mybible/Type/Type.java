@@ -19,15 +19,12 @@ public class Type {
     )
     @Column(
             name = "type_id",
-            updatable = false,
-            unique = true,
-            insertable = false
+            unique = true
     )
     private Long typeId;
 
     @Column(
             name = "description",
-            nullable = false,
             columnDefinition = "TEXT",
             updatable = true
     )

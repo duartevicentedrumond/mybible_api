@@ -25,8 +25,7 @@ public class Transaction {
     @Column(
             name = "transaction_id",
             updatable = false,
-            unique = true,
-            insertable = false
+            unique = true
     )
     private Long transactionId;
 
