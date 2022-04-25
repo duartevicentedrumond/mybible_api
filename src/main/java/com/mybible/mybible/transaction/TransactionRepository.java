@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findAllByOrderByDateDesc();
     Optional<Transaction> findByTransactionId(Long transactionId);
 
     @Query(
@@ -20,4 +19,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             nativeQuery = true
     )
     List<Object[]> getSumByCategory();
+
+    @Query(
+            value = "SELECT * FROM \"transaction\" " +
+                    "ORDER BY date DESC, transaction_id DESC",
+            nativeQuery = true
+    )
+    List<Transaction> findAllByOrderByDateAndIdDesc();
 }
