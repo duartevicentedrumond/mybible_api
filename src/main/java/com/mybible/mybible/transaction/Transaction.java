@@ -6,6 +6,7 @@ import com.mybible.mybible.category.Category;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.*;
 
@@ -51,25 +52,56 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties({"description"})
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
+    @JsonIgnoreProperties({"description"})
     private Type type;
+
+    @ManyToOne
+    @JoinColumn(
+            name="transactionParent",
+            referencedColumnName = "transaction_id"
+    )
+    @JsonIgnoreProperties({
+            "amount",
+            "date",
+            "description",
+            "category",
+            "type",
+            "transactionParent",
+            "transactionChild"
+    })
+    private Transaction transactionParent;
+
+    @OneToMany(
+            mappedBy = "transactionParent"
+    )
+    @JsonIgnoreProperties({
+            "amount",
+            "date",
+            "description",
+            "category",
+            "type",
+            "transactionParent",
+            "transactionChild"
+    })
+    private List<Transaction> transactionChild;
 
     public Transaction() {
     }
 
-    public Transaction(String description,
-                       Date date,
-                       Double amount,
-                       Category category,
-                       Type type) {
+    public Transaction(Long transactionId, String description, Date date, Double amount, Category category, Type type, Transaction transactionParent, List<Transaction> transactionChild) {
+        this.transactionId = transactionId;
         this.description = description;
         this.date = date;
         this.amount = amount;
         this.category = category;
         this.type = type;
+        this.transactionParent = transactionParent;
+        this.transactionChild = transactionChild;
     }
 
     public Long getTransactionId() {
@@ -120,15 +152,33 @@ public class Transaction {
         this.type = type;
     }
 
+    public Transaction getTransactionParent() {
+        return transactionParent;
+    }
+
+    public void setTransactionParent(Transaction transactionParent) {
+        this.transactionParent = transactionParent;
+    }
+
+    public List<Transaction> getTransactionChild() {
+        return transactionChild;
+    }
+
+    public void setTransactionChild(List<Transaction> transactionChild) {
+        this.transactionChild = transactionChild;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
-                "transaction_id=" + transactionId +
+                "transactionId=" + transactionId +
                 ", description='" + description + '\'' +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", amount=" + amount +
                 ", category=" + category +
                 ", type=" + type +
+                ", transactionParent=" + transactionParent +
+                ", transactionChild=" + transactionChild +
                 '}';
     }
 }
