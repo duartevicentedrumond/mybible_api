@@ -3,6 +3,7 @@ package com.mybible.mybible.transaction;
 import com.fasterxml.jackson.annotation.*;
 import com.mybible.mybible.Type.Type;
 import com.mybible.mybible.category.Category;
+import com.mybible.mybible.person.Person;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -61,6 +62,15 @@ public class Transaction {
     private Type type;
 
     @ManyToOne
+    @JoinColumn(name = "person_id")
+    @JsonIgnoreProperties({
+            "nickname",
+            "full_name",
+            "birthday"
+    })
+    private Person person;
+
+    @ManyToOne
     @JoinColumn(
             name="transactionParent",
             referencedColumnName = "transaction_id"
@@ -71,6 +81,7 @@ public class Transaction {
             "description",
             "category",
             "type",
+            "person",
             "transactionParent",
             "transactionChild"
     })
@@ -85,6 +96,7 @@ public class Transaction {
             "description",
             "category",
             "type",
+            "person",
             "transactionParent",
             "transactionChild"
     })
@@ -93,13 +105,14 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long transactionId, String description, Date date, Double amount, Category category, Type type, Transaction transactionParent, List<Transaction> transactionChild) {
+    public Transaction(Long transactionId, String description, Date date, Double amount, Category category, Type type, Person person, Transaction transactionParent, List<Transaction> transactionChild) {
         this.transactionId = transactionId;
         this.description = description;
         this.date = date;
         this.amount = amount;
         this.category = category;
         this.type = type;
+        this.person = person;
         this.transactionParent = transactionParent;
         this.transactionChild = transactionChild;
     }
@@ -152,6 +165,14 @@ public class Transaction {
         this.type = type;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     public Transaction getTransactionParent() {
         return transactionParent;
     }
@@ -177,6 +198,7 @@ public class Transaction {
                 ", amount=" + amount +
                 ", category=" + category +
                 ", type=" + type +
+                ", person=" + person +
                 ", transactionParent=" + transactionParent +
                 ", transactionChild=" + transactionChild +
                 '}';
