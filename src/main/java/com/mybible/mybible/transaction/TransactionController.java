@@ -1,8 +1,7 @@
 package com.mybible.mybible.transaction;
 
-import com.mybible.mybible.Type.Type;
-import com.mybible.mybible.category.Category;
 import com.mybible.mybible.category.CategoryService;
+import com.mybible.mybible.subtransaction.SubtransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +20,27 @@ public class TransactionController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private SubtransactionService subtransactionService;
+
     @PostMapping("/add")
     public Transaction add(@RequestBody Transaction transaction){
-        return transactionService.saveTransaction(transaction);
+
+        Transaction editedTransaction = new Transaction();
+        editedTransaction.setDescription(transaction.getDescription());
+        editedTransaction.setDate(transaction.getDate());
+        editedTransaction.setAmount(transaction.getAmount());
+        editedTransaction.setType(transaction.getType());
+        editedTransaction.setTransactionParent(transaction.getTransactionParent());
+
+        Transaction submittedTransaction = transactionService.saveTransaction(editedTransaction);
+
+        transaction.getSubtransaction().forEach(subtransaction -> {
+            subtransaction.setTransaction(submittedTransaction);
+            subtransactionService.saveSubtransaction(subtransaction);
+        });
+
+        return submittedTransaction;
     }
 
     @GetMapping("/getAll")

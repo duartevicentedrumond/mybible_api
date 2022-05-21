@@ -1,9 +1,8 @@
 package com.mybible.mybible.transaction;
 
 import com.fasterxml.jackson.annotation.*;
-import com.mybible.mybible.Type.Type;
-import com.mybible.mybible.category.Category;
-import com.mybible.mybible.person.Person;
+import com.mybible.mybible.subtransaction.Subtransaction;
+import com.mybible.mybible.type.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -52,23 +51,9 @@ public class Transaction {
     private Double amount;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties({"description"})
-    private Category category;
-
-    @ManyToOne
     @JoinColumn(name = "type_id")
     @JsonIgnoreProperties({"description"})
     private Type type;
-
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    @JsonIgnoreProperties({
-            "nickname",
-            "full_name",
-            "birthday"
-    })
-    private Person person;
 
     @ManyToOne
     @JoinColumn(
@@ -79,11 +64,10 @@ public class Transaction {
             "amount",
             "date",
             "description",
-            "category",
             "type",
-            "person",
             "transactionParent",
-            "transactionChild"
+            "transactionChild",
+            "subvalue"
     })
     private Transaction transactionParent;
 
@@ -94,27 +78,29 @@ public class Transaction {
             "amount",
             "date",
             "description",
-            "category",
             "type",
-            "person",
             "transactionParent",
-            "transactionChild"
+            "transactionChild",
+            "subvalue"
     })
     private List<Transaction> transactionChild;
+
+    @OneToMany
+    @JoinColumn(name = "transaction_id")
+    private List<Subtransaction> subtransaction;
 
     public Transaction() {
     }
 
-    public Transaction(Long transactionId, String description, Date date, Double amount, Category category, Type type, Person person, Transaction transactionParent, List<Transaction> transactionChild) {
+    public Transaction(Long transactionId, String description, Date date, Double amount, Type type, Transaction transactionParent, List<Transaction> transactionChild, List<Subtransaction> subtransaction) {
         this.transactionId = transactionId;
         this.description = description;
         this.date = date;
         this.amount = amount;
-        this.category = category;
         this.type = type;
-        this.person = person;
         this.transactionParent = transactionParent;
         this.transactionChild = transactionChild;
+        this.subtransaction = subtransaction;
     }
 
     public Long getTransactionId() {
@@ -149,28 +135,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public Transaction getTransactionParent() {
@@ -189,6 +159,14 @@ public class Transaction {
         this.transactionChild = transactionChild;
     }
 
+    public List<Subtransaction> getSubtransaction() {
+        return subtransaction;
+    }
+
+    public void setSubtransaction(List<Subtransaction> subtransaction) {
+        this.subtransaction = subtransaction;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -196,11 +174,10 @@ public class Transaction {
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", amount=" + amount +
-                ", category=" + category +
                 ", type=" + type +
-                ", person=" + person +
                 ", transactionParent=" + transactionParent +
                 ", transactionChild=" + transactionChild +
+                ", subtransaction=" + subtransaction +
                 '}';
     }
 }
