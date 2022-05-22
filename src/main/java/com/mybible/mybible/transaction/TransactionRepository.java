@@ -5,15 +5,32 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    Optional<Transaction> findByTransactionId(Long transactionId);
 
     @Query(
-            value = "SELECT category.description, SUM(amount) AS \"total\" FROM \"transaction\" " +
-                    "JOIN category ON \"transaction\".\"category_id\" = category.category_id " +
+            value = "SELECT " +
+                        "transaction_id, " +
+                        "date," +
+                        "description," +
+                        "SUM(subtransaction.amount) as \"total_amount\"," +
+                        "type_id," +
+                        "transaction_parent " +
+                    "FROM  \"transaction\" " +
+                    "JOIN \"subtransaction\" USING (transaction_id) " +
+                    "WHERE  transaction_id = ?1 " +
+                    "GROUP BY \"transaction\".\"transaction_id\" ",
+            nativeQuery = true
+    )
+    Transaction findByTransactionId(Long transactionId);
+
+    @Query(
+            value = "SELECT " +
+                        "category.description, " +
+                        "SUM(amount) AS \"total\" " +
+                    "FROM \"subtransaction\" " +
+                    "JOIN category ON \"subtransaction\".\"category_id\" = category.category_id " +
                     "GROUP BY category.category_id " +
                     "ORDER BY category.category_id",
             nativeQuery = true
@@ -21,7 +38,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Object[]> getSumByCategory();
 
     @Query(
-            value = "SELECT * FROM \"transaction\" " +
+            value = "SELECT " +
+                        "transaction_id, " +
+                        "date," +
+                        "description," +
+                        "SUM(subtransaction.amount) as \"total_amount\"," +
+                        "type_id," +
+                        "transaction_parent " +
+                    "FROM  \"transaction\" " +
+                    "JOIN \"subtransaction\" USING (transaction_id) " +
+                    "GROUP BY \"transaction\".\"transaction_id\" " +
                     "ORDER BY date DESC, transaction_id DESC",
             nativeQuery = true
     )

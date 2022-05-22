@@ -52,13 +52,13 @@ public class Subtransaction {
     @ManyToOne
     @JoinColumn(name = "transaction_id")
     @JsonIgnoreProperties({
-            "amount",
             "date",
             "description",
+            "totalAmount",
             "type",
             "transactionParent",
             "transactionChild",
-            "subtransaction"
+            "subtransactions"
     })
     private Transaction transaction;
 
@@ -115,7 +115,7 @@ public class Subtransaction {
 
     @Override
     public String toString() {
-        return "Subvalue{" +
+        return "Subtransaction{" +
                 "subtransactionId=" + subtransactionId +
                 ", amount=" + amount +
                 ", category=" + category +

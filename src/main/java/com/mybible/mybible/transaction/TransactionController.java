@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +30,12 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction.setDate(transaction.getDate());
-        editedTransaction.setAmount(transaction.getAmount());
         editedTransaction.setType(transaction.getType());
         editedTransaction.setTransactionParent(transaction.getTransactionParent());
 
         Transaction submittedTransaction = transactionService.saveTransaction(editedTransaction);
 
-        transaction.getSubtransaction().forEach(subtransaction -> {
+        transaction.getSubtransactions().forEach(subtransaction -> {
             subtransaction.setTransaction(submittedTransaction);
             subtransactionService.saveSubtransaction(subtransaction);
         });
@@ -49,12 +49,40 @@ public class TransactionController {
     }
 
     @RequestMapping("/{transactionId}")
-    public Optional<Transaction> getTransaction(@PathVariable Long transactionId){
+    public Transaction getTransaction(@PathVariable Long transactionId){
         return transactionService.getTransaction(transactionId);
     }
 
     @PutMapping("/update/{transactionId}")
     public Transaction updateTransaction(@PathVariable Long transactionId, @RequestBody Transaction transaction){
+
+        Transaction oldTransaction = transactionService.getTransaction(transactionId);
+
+        List<Long> oldSubtransactionsIdsList = new ArrayList<>();
+        oldTransaction.getSubtransactions().forEach(oldsubtransaction -> {
+            oldSubtransactionsIdsList.add(oldsubtransaction.getSubtransactionId());
+        });
+
+        List<Long> newSubtransactionsIdsList = new ArrayList<>();
+        transaction.getSubtransactions().forEach(subtransaction -> {
+
+            Long subtransactionId = subtransaction.getSubtransactionId();
+
+            if (subtransactionId != null) {
+                subtransaction.setTransaction(transaction);
+                subtransactionService.saveSubtransaction(subtransaction);
+                newSubtransactionsIdsList.add(subtransactionId);
+            } else {
+                subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
+            }
+        });
+
+        oldSubtransactionsIdsList.removeAll(newSubtransactionsIdsList);
+
+        oldSubtransactionsIdsList.forEach(oldSubtransactionId ->{
+            subtransactionService.deleteSubtransaction(oldSubtransactionId);
+        });
+
         return transactionService.updateTransaction(transactionId, transaction);
     }
 

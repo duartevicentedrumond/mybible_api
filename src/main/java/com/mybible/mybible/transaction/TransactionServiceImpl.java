@@ -23,7 +23,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Optional<Transaction> getTransaction(Long transactionId) {
+    public Transaction getTransaction(Long transactionId) {
         return transactionRepository.findByTransactionId(transactionId);
     }
 
@@ -31,6 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction updateTransaction(Long transactionId, Transaction transaction) {
         return transactionRepository.save(transaction);
     }
+
     @Override
     public List<Object[]> getSumByCategory() {
         return transactionRepository.getSumByCategory();

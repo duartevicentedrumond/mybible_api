@@ -44,11 +44,7 @@ public class Transaction {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
 
-    @Column(
-            name = "amount",
-            nullable = false
-    )
-    private Double amount;
+    private Double totalAmount;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -61,9 +57,9 @@ public class Transaction {
             referencedColumnName = "transaction_id"
     )
     @JsonIgnoreProperties({
-            "amount",
             "date",
             "description",
+            "totalAmount",
             "type",
             "transactionParent",
             "transactionChild",
@@ -75,9 +71,9 @@ public class Transaction {
             mappedBy = "transactionParent"
     )
     @JsonIgnoreProperties({
-            "amount",
             "date",
             "description",
+            "totalAmount",
             "type",
             "transactionParent",
             "transactionChild",
@@ -87,20 +83,20 @@ public class Transaction {
 
     @OneToMany
     @JoinColumn(name = "transaction_id")
-    private List<Subtransaction> subtransaction;
+    private List<Subtransaction> subtransactions;
 
     public Transaction() {
     }
 
-    public Transaction(Long transactionId, String description, Date date, Double amount, Type type, Transaction transactionParent, List<Transaction> transactionChild, List<Subtransaction> subtransaction) {
+    public Transaction(Long transactionId, String description, Date date, Double totalAmount, Type type, Transaction transactionParent, List<Transaction> transactionChild, List<Subtransaction> subtransactions) {
         this.transactionId = transactionId;
         this.description = description;
         this.date = date;
-        this.amount = amount;
+        this.totalAmount = totalAmount;
         this.type = type;
         this.transactionParent = transactionParent;
         this.transactionChild = transactionChild;
-        this.subtransaction = subtransaction;
+        this.subtransactions = subtransactions;
     }
 
     public Long getTransactionId() {
@@ -127,12 +123,12 @@ public class Transaction {
         this.date = date;
     }
 
-    public Double getAmount() {
-        return amount;
+    public Double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public Type getType() {
@@ -159,12 +155,12 @@ public class Transaction {
         this.transactionChild = transactionChild;
     }
 
-    public List<Subtransaction> getSubtransaction() {
-        return subtransaction;
+    public List<Subtransaction> getSubtransactions() {
+        return subtransactions;
     }
 
-    public void setSubtransaction(List<Subtransaction> subtransaction) {
-        this.subtransaction = subtransaction;
+    public void setSubtransactions(List<Subtransaction> subtransactions) {
+        this.subtransactions = subtransactions;
     }
 
     @Override
@@ -173,11 +169,11 @@ public class Transaction {
                 "transactionId=" + transactionId +
                 ", description='" + description + '\'' +
                 ", date=" + date +
-                ", amount=" + amount +
+                ", totalAmount=" + totalAmount +
                 ", type=" + type +
                 ", transactionParent=" + transactionParent +
                 ", transactionChild=" + transactionChild +
-                ", subtransaction=" + subtransaction +
+                ", subtransactions=" + subtransactions +
                 '}';
     }
 }

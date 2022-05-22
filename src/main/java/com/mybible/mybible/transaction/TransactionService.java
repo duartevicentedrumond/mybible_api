@@ -7,7 +7,7 @@ public interface TransactionService {
 
     Transaction saveTransaction(Transaction transaction);
     List<Transaction> getAllTransactions();
-    Optional<Transaction> getTransaction(Long transactionId);
+    Transaction getTransaction(Long transactionId);
     Transaction updateTransaction(Long transactionId, Transaction transaction);
     List<Object[]> getSumByCategory();
     void deleteTransaction(Long transactionId);
