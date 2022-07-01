@@ -34,9 +34,7 @@ public class TransactionController {
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setType(transaction.getType());
 
-        if (transaction.getTransactionParent() == null) {
-            System.out.println("É nulo");
-        } else {
+        if (transaction.getTransactionParent().getTransactionId() != null) {
             editedTransaction.setTransactionParent(transaction.getTransactionParent());
         }
 
