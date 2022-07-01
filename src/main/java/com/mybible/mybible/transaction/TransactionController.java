@@ -27,11 +27,18 @@ public class TransactionController {
     @PostMapping("/add")
     public Transaction add(@RequestBody Transaction transaction){
 
+        System.out.println(transaction);
+
         Transaction editedTransaction = new Transaction();
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setType(transaction.getType());
-        editedTransaction.setTransactionParent(transaction.getTransactionParent());
+
+        if (transaction.getTransactionParent() == null) {
+            System.out.println("É nulo");
+        } else {
+            editedTransaction.setTransactionParent(transaction.getTransactionParent());
+        }
 
         Transaction submittedTransaction = transactionService.saveTransaction(editedTransaction);
 
