@@ -32,6 +32,7 @@ public class TransactionController {
     public Transaction add(@RequestBody Transaction transaction){
 
         Transaction editedTransaction = new Transaction();
+        Transaction submittedTransaction;
 
         //filter only date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setDate(transaction.getDate());
@@ -41,8 +42,12 @@ public class TransactionController {
         //add relation between new transaction (editedTransaction) and existing types
         editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
 
+        //add custom ID to new transaction
+        String customId = transactionService.getLastTransactionByOrderByYear(editedTransaction.getDate());
+        editedTransaction.setCustomId(customId);
+
         //submit editedTransaction
-        Transaction submittedTransaction = transactionService.saveTransaction(editedTransaction);
+        submittedTransaction = transactionService.saveTransaction(editedTransaction);
 
         //submit new subtransactions
         addSubtransactions(transaction, submittedTransaction);
@@ -67,6 +72,7 @@ public class TransactionController {
     public Transaction updateTransaction(@PathVariable Long transactionId, @RequestBody Transaction transaction){
 
         Transaction editedTransaction = new Transaction();
+        Transaction submittedTransaction;
 
         //filter only id, date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setTransactionId(transactionId);
@@ -78,7 +84,7 @@ public class TransactionController {
         editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
 
         //submit editedTransaction
-        Transaction submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
+        submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
 
         //update related subtransactions
         updateSubtransactions(transaction, submittedTransaction);

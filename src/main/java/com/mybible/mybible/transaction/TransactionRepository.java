@@ -2,6 +2,7 @@ package com.mybible.mybible.transaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(
             value = "SELECT " +
                         "transaction_id, " +
+                        "custom_id, " +
                         "date," +
                         "transaction.description," +
                         "SUM(subtransaction.amount) as \"total_amount\"," +
@@ -39,6 +41,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(
             value = "SELECT " +
                         "transaction_id, " +
+                        "custom_id, " +
                         "date," +
                         "description," +
                         "SUM(subtransaction.amount) as \"total_amount\"," +
@@ -50,4 +53,22 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             nativeQuery = true
     )
     List<Transaction> findAllByOrderByDateAndIdDesc();
+
+    @Query(
+            value = "SELECT " +
+                        "transaction_id, " +
+                        "custom_id, " +
+                        "date, " +
+                        "description, " +
+                        "total_amount, " +
+                        "transaction_parent " +
+                    "FROM transaction " +
+                    "WHERE to_char( date, 'YYYY' ) = :year " +
+                    "ORDER BY custom_id DESC, transaction_id DESC " +
+                    "LIMIT 1",
+            nativeQuery = true
+    )
+    Transaction findTopByOrderByIdDesc(
+            @Param("year") String year
+    );
 }

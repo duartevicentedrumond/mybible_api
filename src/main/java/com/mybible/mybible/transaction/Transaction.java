@@ -1,6 +1,7 @@
 package com.mybible.mybible.transaction;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mybible.mybible.subtransaction.Subtransaction;
 import com.mybible.mybible.type.Type;
 
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static javax.persistence.GenerationType.*;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Transaction")
 public class Transaction {
@@ -22,8 +23,8 @@ public class Transaction {
             allocationSize = 1
     )
     @GeneratedValue(
-          strategy = SEQUENCE,
-          generator = "transaction_sequence"
+            strategy = SEQUENCE,
+            generator = "transaction_sequence"
     )
     @Column(
             name = "transaction_id",
@@ -31,6 +32,11 @@ public class Transaction {
             unique = true
     )
     private Long transactionId;
+
+    @Column(
+            name = "custom_id"
+    )
+    private String customId;
 
     @Column(
             name = "description",
@@ -61,10 +67,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(
             name="transaction_parent",
-            referencedColumnName = "transaction_id"
+            referencedColumnName = "transaction_id",
+            nullable = true
     )
     @JsonIgnoreProperties({
             "date",
+            "customId",
             "description",
             "totalAmount",
             "types",
@@ -77,6 +85,7 @@ public class Transaction {
     @OneToMany( mappedBy = "transactionParent" )
     @JsonIgnoreProperties({
             "date",
+            "customId",
             "description",
             "totalAmount",
             "types",
@@ -99,13 +108,12 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long transactionId, String description, Date date, Double totalAmount) {
+    public Transaction(Long transactionId, String customId, String description, Date date, Double totalAmount) {
         this.transactionId = transactionId;
+        this.customId = customId;
         this.description = description;
         this.date = date;
         this.totalAmount = totalAmount;
-        this.transactionParent = transactionParent;
-        this.transactionChildren = transactionChildren;
     }
 
     public Long getTransactionId() {
@@ -114,6 +122,14 @@ public class Transaction {
 
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
     }
 
     public String getDescription() {
@@ -179,14 +195,15 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionId=" + transactionId +
-                ", description='" + description + '\'' +
-                ", date=" + date +
-                ", totalAmount=" + totalAmount +
-                ", types=" + types +
-                ", transactionParent=" + transactionParent.getTransactionId() +
-                ", transactionChildren=" + transactionChildren +
-                ", subtransactions=" + subtransactions +
+                    "transactionId=" + transactionId +
+                    ", customId='" + customId + '\'' +
+                    ", description='" + description + '\'' +
+                    ", date=" + date +
+                    ", totalAmount=" + totalAmount +
+                    ", types=" + types +
+                    ", transactionParent=" + transactionParent +
+                    ", transactionChildren=" + transactionChildren +
+                    ", subtransactions=" + subtransactions +
                 '}';
     }
 }

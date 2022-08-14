@@ -1,7 +1,7 @@
 package com.mybible.mybible.transaction;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface TransactionService {
 
@@ -11,4 +11,5 @@ public interface TransactionService {
     Transaction updateTransaction(Long transactionId, Transaction transaction);
     List<Object[]> getSumByCategory();
     void deleteTransaction(Long transactionId);
+    String getLastTransactionByOrderByYear(Date date);
 }
