@@ -29,14 +29,12 @@ public class Person {
 
     @Column(
             name = "nickname",
-            columnDefinition = "TEXT",
             updatable = true
     )
     private String nickname;
 
     @Column(
             name = "full_name",
-            columnDefinition = "TEXT",
             updatable = true,
             nullable = true
     )

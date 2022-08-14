@@ -25,7 +25,6 @@ public class Category {
 
     @Column(
             name = "description",
-            columnDefinition = "TEXT",
             updatable = true
     )
     private String description;
@@ -56,7 +55,7 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "category_id=" + categoryId +
+                "categoryId=" + categoryId +
                 ", description='" + description + '\'' +
                 '}';
     }

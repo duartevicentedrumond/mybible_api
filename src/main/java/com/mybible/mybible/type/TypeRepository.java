@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
     List<Type> findAllByOrderByTypeId();
-    Optional<Type> findByTypeId(Long typeId);
+    Type findByTypeId(Long typeId);
 }

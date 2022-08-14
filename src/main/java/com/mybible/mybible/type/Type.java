@@ -1,6 +1,12 @@
 package com.mybible.mybible.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mybible.mybible.transaction.Transaction;
+
 import javax.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -25,15 +31,23 @@ public class Type {
 
     @Column(
             name = "description",
-            columnDefinition = "TEXT",
             updatable = true
     )
     private String description;
 
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,
+            mappedBy = "types"
+    )
+    @JsonIgnore
+    private Set<Transaction> transactions = new HashSet<>();
+
     public Type() {
     }
 
-    public Type(String description) {
+    public Type(Long typeId, String description) {
+        this.typeId = typeId;
         this.description = description;
     }
 
@@ -53,10 +67,18 @@ public class Type {
         this.description = description;
     }
 
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
     @Override
     public String toString() {
         return "Type{" +
-                "type_id=" + typeId +
+                "typeId=" + typeId +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> findAllByOrderByPersonId();
-    Optional<Person> findByPersonId(Long personId);
+    Person findByPersonId(Long personId);
 }

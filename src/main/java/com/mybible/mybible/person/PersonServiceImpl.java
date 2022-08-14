@@ -23,7 +23,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<Person> getPerson(Long personId) {
+    public Person getPerson(Long personId) {
         return personRepository.findByPersonId(personId);
     }
 

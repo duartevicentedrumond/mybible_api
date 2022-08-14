@@ -6,7 +6,9 @@ import com.mybible.mybible.type.Type;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.*;
 
@@ -32,8 +34,7 @@ public class Transaction {
 
     @Column(
             name = "description",
-            nullable = false,
-            columnDefinition = "TEXT"
+            nullable = false
     )
     private String description;
 
@@ -46,57 +47,65 @@ public class Transaction {
 
     private Double totalAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
-    @JsonIgnoreProperties({"description"})
-    private Type type;
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST
+    )
+    @JoinTable(
+            name = "transaction_types",
+            joinColumns = { @JoinColumn(name = "transaction_id") },
+            inverseJoinColumns = { @JoinColumn(name = "type_id") }
+    )
+    private Set<Type> types = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(
-            name="transactionParent",
+            name="transaction_parent",
             referencedColumnName = "transaction_id"
     )
     @JsonIgnoreProperties({
             "date",
             "description",
             "totalAmount",
-            "type",
+            "types",
             "transactionParent",
-            "transactionChild",
-            "subvalue"
+            "transactionChildren",
+            "subtransactions"
     })
     private Transaction transactionParent;
 
-    @OneToMany(
-            mappedBy = "transactionParent"
-    )
+    @OneToMany( mappedBy = "transactionParent" )
     @JsonIgnoreProperties({
             "date",
             "description",
             "totalAmount",
-            "type",
+            "types",
             "transactionParent",
-            "transactionChild",
-            "subvalue"
+            "transactionChildren",
+            "subtransactions"
     })
-    private List<Transaction> transactionChild;
+    private List<Transaction> transactionChildren;
 
-    @OneToMany
-    @JoinColumn(name = "transaction_id")
-    private List<Subtransaction> subtransactions;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "transaction"
+    )
+    @JsonIgnoreProperties({
+            "transaction"
+    })
+    private Set<Subtransaction> subtransactions = new HashSet<>();
 
     public Transaction() {
     }
 
-    public Transaction(Long transactionId, String description, Date date, Double totalAmount, Type type, Transaction transactionParent, List<Transaction> transactionChild, List<Subtransaction> subtransactions) {
+    public Transaction(Long transactionId, String description, Date date, Double totalAmount) {
         this.transactionId = transactionId;
         this.description = description;
         this.date = date;
         this.totalAmount = totalAmount;
-        this.type = type;
         this.transactionParent = transactionParent;
-        this.transactionChild = transactionChild;
-        this.subtransactions = subtransactions;
+        this.transactionChildren = transactionChildren;
     }
 
     public Long getTransactionId() {
@@ -131,12 +140,16 @@ public class Transaction {
         this.totalAmount = totalAmount;
     }
 
-    public Type getType() {
-        return type;
+    public Set<Type> getTypes() {
+        return types;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setTypes(Set<Type> types) {
+        this.types = types;
+    }
+
+    public void addType(Type type) {
+        types.add(type);
     }
 
     public Transaction getTransactionParent() {
@@ -147,19 +160,19 @@ public class Transaction {
         this.transactionParent = transactionParent;
     }
 
-    public List<Transaction> getTransactionChild() {
-        return transactionChild;
+    public List<Transaction> getTransactionChildren() {
+        return transactionChildren;
     }
 
-    public void setTransactionChild(List<Transaction> transactionChild) {
-        this.transactionChild = transactionChild;
+    public void setTransactionChildren(List<Transaction> transactionChildren) {
+        this.transactionChildren = transactionChildren;
     }
 
-    public List<Subtransaction> getSubtransactions() {
+    public Set<Subtransaction> getSubtransactions() {
         return subtransactions;
     }
 
-    public void setSubtransactions(List<Subtransaction> subtransactions) {
+    public void setSubtransactions(Set<Subtransaction> subtransactions) {
         this.subtransactions = subtransactions;
     }
 
@@ -170,9 +183,9 @@ public class Transaction {
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", totalAmount=" + totalAmount +
-                ", type=" + type +
-                ", transactionParent=" + transactionParent +
-                ", transactionChild=" + transactionChild +
+                ", types=" + types +
+                ", transactionParent=" + transactionParent.getTransactionId() +
+                ", transactionChildren=" + transactionChildren +
                 ", subtransactions=" + subtransactions +
                 '}';
     }

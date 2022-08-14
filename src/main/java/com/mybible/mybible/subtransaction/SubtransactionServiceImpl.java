@@ -1,5 +1,7 @@
 package com.mybible.mybible.subtransaction;
 
+import com.mybible.mybible.category.CategoryService;
+import com.mybible.mybible.person.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,12 @@ public class SubtransactionServiceImpl implements SubtransactionService {
 
     @Autowired
     private SubtransactionRepository subtransactionRepository;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private PersonService personService;
 
     @Override
     public Subtransaction saveSubtransaction(Subtransaction subtransaction) {

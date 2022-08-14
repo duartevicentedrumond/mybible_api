@@ -1,14 +1,15 @@
 package com.mybible.mybible.transaction;
 
 import com.mybible.mybible.category.CategoryService;
+import com.mybible.mybible.subtransaction.Subtransaction;
 import com.mybible.mybible.subtransaction.SubtransactionService;
+import com.mybible.mybible.type.Type;
+import com.mybible.mybible.type.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -19,6 +20,9 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @Autowired
+    private TypeService typeService;
+
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -27,23 +31,24 @@ public class TransactionController {
     @PostMapping("/add")
     public Transaction add(@RequestBody Transaction transaction){
 
-        System.out.println(transaction);
-
         Transaction editedTransaction = new Transaction();
-        editedTransaction.setDescription(transaction.getDescription());
+
+        //filter only date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setDate(transaction.getDate());
-        editedTransaction.setType(transaction.getType());
+        editedTransaction.setDescription(transaction.getDescription());
+        editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
 
-        if (transaction.getTransactionParent().getTransactionId() != null) {
-            editedTransaction.setTransactionParent(transaction.getTransactionParent());
-        }
+        //add relation between new transaction (editedTransaction) and existing types
+        editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
 
+        //submit editedTransaction
         Transaction submittedTransaction = transactionService.saveTransaction(editedTransaction);
 
-        transaction.getSubtransactions().forEach(subtransaction -> {
-            subtransaction.setTransaction(submittedTransaction);
-            subtransactionService.saveSubtransaction(subtransaction);
-        });
+        //submit new subtransactions
+        addSubtransactions(transaction, submittedTransaction);
+
+        //print submittedTransaction
+        System.out.println(submittedTransaction);
 
         return submittedTransaction;
     }
@@ -61,34 +66,27 @@ public class TransactionController {
     @PutMapping("/update/{transactionId}")
     public Transaction updateTransaction(@PathVariable Long transactionId, @RequestBody Transaction transaction){
 
-        Transaction oldTransaction = transactionService.getTransaction(transactionId);
+        Transaction editedTransaction = new Transaction();
 
-        List<Long> oldSubtransactionsIdsList = new ArrayList<>();
-        oldTransaction.getSubtransactions().forEach(oldsubtransaction -> {
-            oldSubtransactionsIdsList.add(oldsubtransaction.getSubtransactionId());
-        });
+        //filter only id, date, description and transactionParent from transaction to editedTransaction
+        editedTransaction.setTransactionId(transactionId);
+        editedTransaction.setDate(transaction.getDate());
+        editedTransaction.setDescription(transaction.getDescription());
+        editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
 
-        List<Long> newSubtransactionsIdsList = new ArrayList<>();
-        transaction.getSubtransactions().forEach(subtransaction -> {
+        //add relation between new transaction (editedTransaction) and existing types
+        editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
 
-            Long subtransactionId = subtransaction.getSubtransactionId();
+        //submit editedTransaction
+        Transaction submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
 
-            if (subtransactionId != null) {
-                subtransaction.setTransaction(transaction);
-                subtransactionService.saveSubtransaction(subtransaction);
-                newSubtransactionsIdsList.add(subtransactionId);
-            } else {
-                subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
-            }
-        });
+        //update related subtransactions
+        updateSubtransactions(transaction, submittedTransaction);
 
-        oldSubtransactionsIdsList.removeAll(newSubtransactionsIdsList);
+        //print submittedTransaction
+        System.out.println(submittedTransaction);
 
-        oldSubtransactionsIdsList.forEach(oldSubtransactionId ->{
-            subtransactionService.deleteSubtransaction(oldSubtransactionId);
-        });
-
-        return transactionService.updateTransaction(transactionId, transaction);
+        return submittedTransaction;
     }
 
     @DeleteMapping("/delete/{transactionId}")
@@ -110,6 +108,69 @@ public class TransactionController {
         });
 
         return listSumByCategory;
+
+    }
+
+    public Transaction addOrUpdateTypes(Transaction existingTransaction, Transaction newTransaction) {
+
+        //go through every type on sent transaction
+        for ( Type type : existingTransaction.getTypes() ) {
+
+            //add or update type into sent transaction
+            Type newType = typeService.getType(type.getTypeId());
+            newTransaction.addType(newType);
+        }
+
+        return newTransaction;
+    }
+
+    public Transaction addOrUpdateTransactionParent(Transaction existingTransaction, Transaction newTransaction) {
+
+        //check if sent transaction has a transactionParent and updates it if it has
+        if ( existingTransaction.getTransactionParent() != null ) {
+
+            Long transactionParentId = existingTransaction.getTransactionParent().getTransactionId();
+            Transaction transactionParent = transactionService.getTransaction(transactionParentId);
+            newTransaction.setTransactionParent(transactionParent);
+        }
+
+        return newTransaction;
+    }
+
+    public void addSubtransactions(Transaction existingTransaction, Transaction newTransaction) {
+
+        //go through every subtransaction on sent transaction
+        for ( Subtransaction subtransaction : existingTransaction.getSubtransactions() ) {
+
+            //add new subtransaction into database
+            subtransaction.setTransaction(newTransaction);
+            Subtransaction newSubtransaction = subtransactionService.saveSubtransaction(subtransaction);
+        }
+
+    }
+
+    public void updateSubtransactions(Transaction existingTransaction, Transaction newTransaction) {
+
+        //go through every subtransaction on sent transaction
+        for ( Subtransaction subtransaction : existingTransaction.getSubtransactions() ) {
+
+            //get subtransactionId
+            Long subtransactionId = subtransaction.getSubtransactionId();
+
+            //check if subtransaction already exists in database and updates it
+            if ( subtransactionId != null ) {
+
+                subtransaction.setTransaction(newTransaction);
+                Subtransaction newSubtransaction = subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
+
+            } else { //check if subtransaction doesn't yet exists in database and creates it
+
+                subtransaction.setTransaction(newTransaction);
+                Subtransaction newSubtransaction = subtransactionService.saveSubtransaction(subtransaction);
+
+            }
+
+        }
 
     }
 }

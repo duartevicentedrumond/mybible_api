@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -26,7 +25,7 @@ public class TypeController {
     }
 
     @RequestMapping("/{typeId}")
-    public Optional<Type> getType(@PathVariable Long typeId){
+    public Type getType(@PathVariable Long typeId){
         return typeService.getType(typeId);
     }
 

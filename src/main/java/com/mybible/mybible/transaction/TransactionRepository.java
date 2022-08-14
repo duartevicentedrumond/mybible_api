@@ -13,9 +13,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             value = "SELECT " +
                         "transaction_id, " +
                         "date," +
-                        "description," +
+                        "transaction.description," +
                         "SUM(subtransaction.amount) as \"total_amount\"," +
-                        "type_id," +
                         "transaction_parent " +
                     "FROM  \"transaction\" " +
                     "JOIN \"subtransaction\" USING (transaction_id) " +
@@ -43,7 +42,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         "date," +
                         "description," +
                         "SUM(subtransaction.amount) as \"total_amount\"," +
-                        "type_id," +
                         "transaction_parent " +
                     "FROM  \"transaction\" " +
                     "JOIN \"subtransaction\" USING (transaction_id) " +

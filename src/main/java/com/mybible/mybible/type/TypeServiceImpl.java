@@ -23,7 +23,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public Optional<Type> getType(Long typeId) {
+    public Type getType(Long typeId) {
         return typeRepository.findByTypeId(typeId);
     }
 

@@ -26,7 +26,7 @@ public class PersonController {
     }
 
     @RequestMapping("/{personId}")
-    public Optional<Person> getPerson(@PathVariable Long personId){
+    public Person getPerson(@PathVariable Long personId){
         return personService.getPerson(personId);
     }
 
