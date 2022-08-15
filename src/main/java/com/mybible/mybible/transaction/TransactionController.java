@@ -74,8 +74,9 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         Transaction submittedTransaction;
 
-        //filter only id, date, description and transactionParent from transaction to editedTransaction
+        //filter only id, customId, date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setTransactionId(transactionId);
+        editedTransaction.setCustomId(transaction.getCustomId());
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
