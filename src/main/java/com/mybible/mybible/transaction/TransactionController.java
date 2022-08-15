@@ -133,7 +133,7 @@ public class TransactionController {
     public Transaction addOrUpdateTransactionParent(Transaction existingTransaction, Transaction newTransaction) {
 
         //check if sent transaction has a transactionParent and updates it if it has
-        if ( existingTransaction.getTransactionParent() != null ) {
+        if ( existingTransaction.getTransactionParent() != null && existingTransaction.getTransactionParent().getTransactionId() != null) {
 
             Long transactionParentId = existingTransaction.getTransactionParent().getTransactionId();
             Transaction transactionParent = transactionService.getTransaction(transactionParentId);
