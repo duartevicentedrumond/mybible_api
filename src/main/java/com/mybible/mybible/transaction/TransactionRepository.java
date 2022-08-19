@@ -63,7 +63,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         "total_amount, " +
                         "transaction_parent " +
                     "FROM transaction " +
-                    "WHERE to_char( date, 'YYYY' ) = :year " +
+                    "WHERE " +
+                        "to_char( date, 'YYYY' ) = :year AND " +
+                        "custom_id IS NOT NULL " +
                     "ORDER BY custom_id DESC, transaction_id DESC " +
                     "LIMIT 1",
             nativeQuery = true

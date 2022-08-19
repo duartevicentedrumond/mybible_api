@@ -62,6 +62,9 @@ public class Transaction {
             joinColumns = { @JoinColumn(name = "transaction_id") },
             inverseJoinColumns = { @JoinColumn(name = "type_id") }
     )
+    @JsonIgnoreProperties({
+            "description",
+    })
     private Set<Type> types = new HashSet<>();
 
     @ManyToOne
@@ -72,7 +75,6 @@ public class Transaction {
     )
     @JsonIgnoreProperties({
             "date",
-            "customId",
             "description",
             "totalAmount",
             "types",
@@ -85,7 +87,6 @@ public class Transaction {
     @OneToMany( mappedBy = "transactionParent" )
     @JsonIgnoreProperties({
             "date",
-            "customId",
             "description",
             "totalAmount",
             "types",

@@ -53,7 +53,7 @@ public class TransactionController {
         addSubtransactions(transaction, submittedTransaction);
 
         //print submittedTransaction
-        System.out.println(submittedTransaction);
+        //System.out.println(submittedTransaction);
 
         return submittedTransaction;
     }
@@ -91,7 +91,7 @@ public class TransactionController {
         updateSubtransactions(transaction, submittedTransaction);
 
         //print submittedTransaction
-        System.out.println(submittedTransaction);
+        //System.out.println(submittedTransaction);
 
         return submittedTransaction;
     }
