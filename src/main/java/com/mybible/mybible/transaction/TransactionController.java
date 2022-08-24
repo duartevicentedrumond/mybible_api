@@ -165,15 +165,14 @@ public class TransactionController {
             Long subtransactionId = subtransaction.getSubtransactionId();
 
             //check if subtransaction already exists in database and updates it
+            subtransaction.setTransaction(newTransaction);
             if ( subtransactionId != null ) {
 
-                subtransaction.setTransaction(newTransaction);
-                Subtransaction newSubtransaction = subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
+                subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
 
             } else { //check if subtransaction doesn't yet exists in database and creates it
 
-                subtransaction.setTransaction(newTransaction);
-                Subtransaction newSubtransaction = subtransactionService.saveSubtransaction(subtransaction);
+                subtransactionService.saveSubtransaction(subtransaction);
 
             }
 
