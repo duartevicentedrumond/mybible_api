@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -88,7 +89,7 @@ public class TransactionController {
         submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
 
         //update related subtransactions
-        updateSubtransactions(transaction, submittedTransaction);
+        updateSubtransactions(transaction, submittedTransaction, transactionId);
 
         //print submittedTransaction
         //System.out.println(submittedTransaction);
@@ -156,7 +157,7 @@ public class TransactionController {
 
     }
 
-    public void updateSubtransactions(Transaction existingTransaction, Transaction newTransaction) {
+    public void updateSubtransactions(Transaction existingTransaction, Transaction newTransaction, Long oldTransactionId) {
 
         //go through every subtransaction on sent transaction
         for ( Subtransaction subtransaction : existingTransaction.getSubtransactions() ) {
@@ -175,6 +176,12 @@ public class TransactionController {
                 subtransactionService.saveSubtransaction(subtransaction);
 
             }
+        }
+
+        Set<Subtransaction> oldSubtransactions = getTransaction(oldTransactionId).getSubtransactions();
+
+        //delete existing subtransactions non existing in sent transaction
+        for ( Subtransaction removedSubtransaction : removeAll(oldSubtransactions, existingTransaction.getSubtransactions()) ) {
 
         }
 
