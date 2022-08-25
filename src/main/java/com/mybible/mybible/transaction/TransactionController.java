@@ -1,7 +1,6 @@
 package com.mybible.mybible.transaction;
 
 import com.mybible.mybible.category.CategoryService;
-import com.mybible.mybible.subtransaction.Subtransaction;
 import com.mybible.mybible.subtransaction.SubtransactionService;
 import com.mybible.mybible.type.Type;
 import com.mybible.mybible.type.TypeService;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -35,10 +33,11 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         Transaction submittedTransaction;
 
-        //filter only date, description and transactionParent from transaction to editedTransaction
+        //filter only date, description, transactionParent and subtransaction from transaction to editedTransaction
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
+        editedTransaction.setSubtransactions(transaction.getSubtransactions());
 
         //add relation between new transaction (editedTransaction) and existing types
         editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
@@ -49,9 +48,6 @@ public class TransactionController {
 
         //submit editedTransaction
         submittedTransaction = transactionService.saveTransaction(editedTransaction);
-
-        //submit new subtransactions
-        addSubtransactions(transaction, submittedTransaction);
 
         //print submittedTransaction
         //System.out.println(submittedTransaction);
@@ -75,12 +71,13 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         Transaction submittedTransaction;
 
-        //filter only id, customId, date, description and transactionParent from transaction to editedTransaction
+        //filter only id, customId, date, description, transactionParent and subtransactions from transaction to editedTransaction
         editedTransaction.setTransactionId(transactionId);
         editedTransaction.setCustomId(transaction.getCustomId());
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
+        editedTransaction.setSubtransactions(transaction.getSubtransactions());
 
         //add relation between new transaction (editedTransaction) and existing types
         editedTransaction = addOrUpdateTypes(transaction, editedTransaction);
@@ -88,11 +85,8 @@ public class TransactionController {
         //submit editedTransaction
         submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
 
-        //update related subtransactions
-        updateSubtransactions(transaction, submittedTransaction, transactionId);
-
         //print submittedTransaction
-        //System.out.println(submittedTransaction);
+        System.out.println(submittedTransaction);
 
         return submittedTransaction;
     }
@@ -145,45 +139,4 @@ public class TransactionController {
         return newTransaction;
     }
 
-    public void addSubtransactions(Transaction existingTransaction, Transaction newTransaction) {
-
-        //go through every subtransaction on sent transaction
-        for ( Subtransaction subtransaction : existingTransaction.getSubtransactions() ) {
-
-            //add new subtransaction into database
-            subtransaction.setTransaction(newTransaction);
-            Subtransaction newSubtransaction = subtransactionService.saveSubtransaction(subtransaction);
-        }
-
-    }
-
-    public void updateSubtransactions(Transaction existingTransaction, Transaction newTransaction, Long oldTransactionId) {
-
-        //go through every subtransaction on sent transaction
-        for ( Subtransaction subtransaction : existingTransaction.getSubtransactions() ) {
-
-            //get subtransactionId
-            Long subtransactionId = subtransaction.getSubtransactionId();
-
-            //check if subtransaction already exists in database and updates it
-            subtransaction.setTransaction(newTransaction);
-            if ( subtransactionId != null ) {
-
-                subtransactionService.updateSubtransaction(subtransactionId, subtransaction);
-
-            } else { //check if subtransaction doesn't yet exists in database and creates it
-
-                subtransactionService.saveSubtransaction(subtransaction);
-
-            }
-        }
-
-        Set<Subtransaction> oldSubtransactions = getTransaction(oldTransactionId).getSubtransactions();
-
-        //delete existing subtransactions non existing in sent transaction
-        for ( Subtransaction removedSubtransaction : removeAll(oldSubtransactions, existingTransaction.getSubtransactions()) ) {
-
-        }
-
-    }
 }

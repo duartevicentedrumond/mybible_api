@@ -1,10 +1,8 @@
 package com.mybible.mybible.subtransaction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mybible.mybible.category.Category;
 import com.mybible.mybible.person.Person;
-import com.mybible.mybible.transaction.Transaction;
 
 import javax.persistence.*;
 
@@ -50,19 +48,6 @@ public class Subtransaction {
     })
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transaction_id")
-    @JsonIgnoreProperties({
-            "date",
-            "description",
-            "totalAmount",
-            "types",
-            "transactionParent",
-            "transactionChildren",
-            "subtransactions"
-    })
-    private Transaction transaction;
-
     public Subtransaction() {
     }
 
@@ -105,14 +90,6 @@ public class Subtransaction {
         this.subtransactionId = subtransactionId;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
-
     @Override
     public String toString() {
         return "Subtransaction{" +
@@ -120,7 +97,6 @@ public class Subtransaction {
                 ", amount=" + amount +
                 ", category=" + category +
                 ", person=" + person +
-                ", transaction=" + transaction +
                 '}';
     }
 }

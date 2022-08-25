@@ -98,8 +98,12 @@ public class Transaction {
 
     @OneToMany(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "transaction"
+            cascade = CascadeType.PERSIST
+    )
+    @JoinTable(
+            name = "transaction_subtransactions",
+            joinColumns = { @JoinColumn(name = "transaction_id") },
+            inverseJoinColumns = { @JoinColumn(name = "subtransaction_id") }
     )
     @JsonIgnoreProperties({
             "transaction"
