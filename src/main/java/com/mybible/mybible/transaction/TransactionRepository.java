@@ -26,6 +26,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         "SUM(amount) AS \"total\" " +
                     "FROM \"subtransaction\" " +
                     "JOIN category ON \"subtransaction\".\"category_id\" = category.category_id " +
+                    "JOIN \"transaction_subtransactions\" ON \"subtransaction\".\"subtransaction_id\" = \"transaction_subtransactions\".\"subtransaction_id\" " +
                     "GROUP BY category.category_id " +
                     "ORDER BY category.category_id",
             nativeQuery = true
