@@ -12,16 +12,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(
             value = "SELECT " +
-                        "transaction_id, " +
-                        "custom_id, " +
-                        "date, " +
-                        "description, " +
-                        "transaction_parent, " +
-                        "SUM(subtransaction.amount) AS \"total_amount\" " +
+                        "transaction.* " +
                     "FROM  \"transaction\" " +
-                    "JOIN \"transaction_subtransactions\" USING (transaction_id) " +
-                    "JOIN \"subtransaction\" USING (subtransaction_id) " +
-                    "WHERE  transaction_id = ?1 " +
+                    "WHERE  \"transaction\".\"transaction_id\" = ?1 " +
                     "GROUP BY \"transaction\".\"transaction_id\" ",
             nativeQuery = true
     )
@@ -41,16 +34,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(
             value = "SELECT " +
-                        "transaction_id, " +
-                        "custom_id, " +
-                        "date, " +
-                        "description, " +
-                        "transaction_parent, " +
-                        "SUM(subtransaction.amount) AS \"total_amount\" " +
+                        "transaction.* " +
                     "FROM  \"transaction\" " +
-                    "JOIN \"transaction_subtransactions\" USING (transaction_id) " +
-                    "JOIN \"subtransaction\" USING (subtransaction_id) " +
-                    "GROUP BY \"transaction\".\"transaction_id\" " +
                     "ORDER BY date DESC, transaction_id DESC",
             nativeQuery = true
     )

@@ -1,6 +1,7 @@
 package com.mybible.mybible.transaction;
 
 import com.mybible.mybible.category.CategoryService;
+import com.mybible.mybible.subtransaction.Subtransaction;
 import com.mybible.mybible.subtransaction.SubtransactionService;
 import com.mybible.mybible.type.Type;
 import com.mybible.mybible.type.TypeService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -33,7 +35,7 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         Transaction submittedTransaction;
 
-        //filter only date, description, transactionParent and subtransaction from transaction to editedTransaction
+        //filter only date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setDate(transaction.getDate());
         editedTransaction.setDescription(transaction.getDescription());
         editedTransaction = addOrUpdateTransactionParent(transaction, editedTransaction);
@@ -71,7 +73,9 @@ public class TransactionController {
         Transaction editedTransaction = new Transaction();
         Transaction submittedTransaction;
 
-        //filter only id, customId, date, description, transactionParent and subtransactions from transaction to editedTransaction
+        Set<Subtransaction> oldSubtransactions = getTransaction(transactionId).getSubtransactions();
+
+        //filter only id, customId, date, description and transactionParent from transaction to editedTransaction
         editedTransaction.setTransactionId(transactionId);
         editedTransaction.setCustomId(transaction.getCustomId());
         editedTransaction.setDate(transaction.getDate());
@@ -84,6 +88,7 @@ public class TransactionController {
 
         //submit editedTransaction
         submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
+        System.out.println("\n\nSUBMITTED BEFORE: " + submittedTransaction);
 
         //print submittedTransaction
         System.out.println(submittedTransaction);

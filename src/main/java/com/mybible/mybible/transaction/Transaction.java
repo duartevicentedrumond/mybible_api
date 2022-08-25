@@ -98,7 +98,7 @@ public class Transaction {
 
     @OneToMany(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST
+            cascade = CascadeType.ALL
     )
     @JoinTable(
             name = "transaction_subtransactions",

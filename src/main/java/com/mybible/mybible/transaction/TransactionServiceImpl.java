@@ -1,5 +1,6 @@
 package com.mybible.mybible.transaction;
 
+import com.mybible.mybible.subtransaction.Subtransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,21 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAllByOrderByDateAndIdDesc();
+
+        List<Transaction> transactions = transactionRepository.findAllByOrderByDateAndIdDesc();
+
+        for (Transaction transaction : transactions) {
+
+            Double total_amount = 0.00;
+            for (Subtransaction subtransaction : transaction.getSubtransactions()) {
+                total_amount += subtransaction.getAmount();
+            }
+
+            transaction.setTotalAmount(total_amount);
+
+        }
+
+        return transactions;
     }
 
     @Override
