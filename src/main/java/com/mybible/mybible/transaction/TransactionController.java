@@ -88,10 +88,9 @@ public class TransactionController {
 
         //submit editedTransaction
         submittedTransaction = transactionService.updateTransaction(transactionId, editedTransaction);
-        System.out.println("\n\nSUBMITTED BEFORE: " + submittedTransaction);
 
         //print submittedTransaction
-        System.out.println(submittedTransaction);
+        //System.out.println(submittedTransaction);
 
         return submittedTransaction;
     }
