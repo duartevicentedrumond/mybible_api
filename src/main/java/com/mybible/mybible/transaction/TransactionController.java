@@ -6,6 +6,7 @@ import com.mybible.mybible.subtransaction.SubtransactionService;
 import com.mybible.mybible.type.Type;
 import com.mybible.mybible.type.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
@@ -33,6 +34,9 @@ public class TransactionController {
 
     @Autowired
     private SubtransactionService subtransactionService;
+
+    @Autowired
+    private Environment env;
 
     @PostMapping("/add")
     public Transaction add(@RequestBody Transaction transaction){
@@ -156,8 +160,10 @@ public class TransactionController {
         //define execution directory
         String directory = "cmd /c cd C:\\Program Files\\PostgreSQL\\13\\bin";
 
-        //define database
-        String database = "my_bible_test";
+        //define database name from variable spring.datasource.url in application.properties file
+        String databaseUrl = env.getProperty("spring.datasource.url");
+        String[] arrOfStr = databaseUrl.split("/");
+        String database = arrOfStr[arrOfStr.length-1];
 
         //define directory to store the backup
         String backupDirectory = "C:\\Users\\duarte\\Documents\\me\\my_backup\\";
