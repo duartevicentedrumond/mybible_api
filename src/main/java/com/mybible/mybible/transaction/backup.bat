@@ -1,0 +1,1 @@
+cd C:\\Program Files\\PostgreSQL\\13\\bin && pg_dump -U postgres -h localhost -p 5433 -d my_bible_test > C:\Users\duarte\Documents\me\my_backup\test.sql
