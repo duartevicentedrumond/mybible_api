@@ -95,4 +95,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         return customId;
     }
+
+    @Override
+    public List<Object[]> getSumByMonth() {
+        return transactionRepository.getSumByMonth();
+    }
 }

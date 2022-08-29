@@ -12,4 +12,5 @@ public interface TransactionService {
     List<Object[]> getSumByCategory();
     void deleteTransaction(Long transactionId);
     String getLastTransactionByOrderByYear(Date date);
+    List<Object[]> getSumByMonth();
 }

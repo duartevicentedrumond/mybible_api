@@ -126,6 +126,24 @@ public class TransactionController {
 
     }
 
+    @GetMapping("/getSumByMonth")
+    public List<SumByMonth> getSumByMonth(){
+
+        List<SumByMonth> listSumByMonth = new ArrayList<>();
+        List<Object[]> sumByMonth = transactionService.getSumByMonth();
+
+        sumByMonth.forEach(month ->{
+            SumByMonth new_month = new SumByMonth();
+            new_month.setYear((Double) month[0]);
+            new_month.setMonth((Double) month[1]);
+            new_month.setSum((Double) month[2]);
+            listSumByMonth.add(new_month);
+        });
+
+        return listSumByMonth;
+
+    }
+
     public Transaction addOrUpdateTypes(Transaction existingTransaction, Transaction newTransaction) {
 
         //go through every type on sent transaction

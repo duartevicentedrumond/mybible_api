@@ -61,4 +61,27 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Transaction findTopByOrderByIdDesc(
             @Param("year") String year
     );
+
+    @Query(
+            value = "with data as( " +
+                        "SELECT " +
+                            "EXTRACT(YEAR FROM date) as year, " +
+                            "EXTRACT(MONTH FROM date) as month, " +
+                            "SUM(subtransaction.amount) as total " +
+                            "FROM \"transaction\" " +
+                        "JOIN transaction_subtransactions ON \"transaction_subtransactions\".transaction_id = \"transaction\".\"transaction_id\" " +
+                        "JOIN subtransaction ON subtransaction.subtransaction_id = transaction_subtransactions.subtransaction_id " +
+                        "GROUP BY year, month " +
+                        ") " +
+                    "SELECT " +
+                        "year, " +
+                        "MONTH, " +
+                        "SUM(total) over (ORDER By YEAR asc, month asc rows between unbounded preceding and current row) " +
+                    "FROM " +
+                        "data " +
+                    "GROUP BY year, month, total " +
+                    "ORDER By YEAR asc, month asc",
+            nativeQuery = true
+    )
+    List<Object[]> getSumByMonth();
 }
