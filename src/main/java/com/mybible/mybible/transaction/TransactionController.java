@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,9 +117,15 @@ public class TransactionController {
         List<Object[]> sumByCategory = transactionService.getSumByCategory();
 
         sumByCategory.forEach(category ->{
+
             SumByCategory new_category = new SumByCategory();
+
+            //round sum to two decimal places
+            Double sum = (Double) category[1];
+            sum = Double.valueOf(Math.round(sum*100))/100;
+
             new_category.setCategory(category[0].toString());
-            new_category.setSum((Double) category[1]);
+            new_category.setSum(sum);
             listSumByCategory.add(new_category);
         });
 
@@ -133,14 +140,44 @@ public class TransactionController {
         List<Object[]> sumByMonth = transactionService.getSumByMonth();
 
         sumByMonth.forEach(month ->{
+
             SumByMonth new_month = new SumByMonth();
+
+            //round sum to two decimal places
+            Double sum = (Double) month[2];
+            sum = Double.valueOf(Math.round(sum*100))/100;
+
             new_month.setYear((Double) month[0]);
             new_month.setMonth((Double) month[1]);
-            new_month.setSum((Double) month[2]);
+            new_month.setSum(sum);
             listSumByMonth.add(new_month);
         });
 
         return listSumByMonth;
+
+    }
+
+    @GetMapping("/getSumByDebt")
+    public List<SumByDebt> getSumByDebt(){
+
+        List<SumByDebt> listSumByDebt = new ArrayList<>();
+        List<Object[]> sumByDebt = transactionService.getSumByDebt();
+
+        sumByDebt.forEach(debtor ->{
+
+            SumByDebt new_debtor = new SumByDebt();
+
+            //round sum to two decimal places
+            Double sum = (Double) debtor[2];
+            sum = Double.valueOf(Math.round(sum*100))/100;
+
+            new_debtor.setPerson_id(((BigInteger) debtor[0]).longValue());
+            new_debtor.setNickname((String) debtor[1]);
+            new_debtor.setDebt(sum);
+            listSumByDebt.add(new_debtor);
+        });
+
+        return listSumByDebt;
 
     }
 
@@ -189,7 +226,7 @@ public class TransactionController {
         SimpleDateFormat formatter = new SimpleDateFormat("YYYY_MM_dd");
         String date = formatter.format(new Date());
 
-        String backupFileName = database + "_" + date + "_" + ".sql";
+        String backupFileName = database + "_" + date + ".sql";
 
         //define backup order
         String backupPostgreSQL = "pg_dump -U postgres -h localhost -p 5433 -d " + database + " > " + backupDirectory + backupFileName;
@@ -206,6 +243,7 @@ public class TransactionController {
             BufferedReader reader=new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
             String line;
+            System.out.println(reader);
 
             message = database + " backup (" + backupFileName + ") executed successfully!";
 

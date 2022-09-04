@@ -100,4 +100,9 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Object[]> getSumByMonth() {
         return transactionRepository.getSumByMonth();
     }
+
+    @Override
+    public List<Object[]> getSumByDebt() {
+        return transactionRepository.getSumByDebt();
+    }
 }

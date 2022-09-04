@@ -84,4 +84,20 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             nativeQuery = true
     )
     List<Object[]> getSumByMonth();
+
+    @Query(
+            value = "SELECT " +
+                        "person.person_id, " +
+                        "person.nickname, " +
+                        "SUM(subtransaction.amount) as debt " +
+                    "FROM " +
+                        "subtransaction " +
+                    "JOIN person ON person.person_id = subtransaction.person_id " +
+                    "WHERE subtransaction.person_id != 0 " +
+                    "GROUP BY person.person_id " +
+                    "Having SUM(subtransaction.amount) != 0 " +
+                    "ORDER BY person.nickname ASC",
+            nativeQuery = true
+    )
+    List<Object[]> getSumByDebt();
 }
