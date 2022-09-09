@@ -9,13 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -205,57 +200,6 @@ public class TransactionController {
         }
 
         return newTransaction;
-    }
-
-    @GetMapping("/backup")
-    public String backupDatabase() throws IOException {
-
-        Process process;
-
-        //define execution directory
-        String directory = "cmd /c cd C:\\Program Files\\PostgreSQL\\13\\bin";
-
-        //define database name from variable spring.datasource.url in application.properties file
-        String databaseUrl = env.getProperty("spring.datasource.url");
-        String[] arrOfStr = databaseUrl.split("/");
-        String database = arrOfStr[arrOfStr.length-1];
-
-        //define directory to store the backup
-        String backupDirectory = "C:\\Users\\duarte\\Documents\\me\\my_backup\\";
-        //define backup file name
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY_MM_dd");
-        String date = formatter.format(new Date());
-
-        String backupFileName = database + "_" + date + ".sql";
-
-        //define backup order
-        String backupPostgreSQL = "pg_dump -U postgres -h localhost -p 5433 -d " + database + " > " + backupDirectory + backupFileName;
-
-        //define entire command
-        String command = directory + " && " + backupPostgreSQL;
-
-        String message = "";
-
-        try {
-            process = Runtime.getRuntime().exec(command);
-
-            process.waitFor();
-            BufferedReader reader=new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
-            String line;
-            System.out.println(reader);
-
-            message = database + " backup (" + backupFileName + ") executed successfully!";
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return message;
     }
 
 }
