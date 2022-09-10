@@ -28,7 +28,8 @@ FOR /F "tokens=*" %%i IN ('dir "%backup_directory%" /b /a-d /t:w /o-d') DO (
 echo No subfolder found
 goto :eof
 :found
-pg_restore -h localhost -p 5433 -U postgres -Fc -d my_bible_test %backup_directory%%a%
+
+pg_restore --clean -h localhost -p 5433 -U postgres -Fc -d my_bible_test %backup_directory%%a%
 
 :: Freeze console window
 ::cmd /k
