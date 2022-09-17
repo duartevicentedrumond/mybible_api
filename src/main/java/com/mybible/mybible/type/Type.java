@@ -2,9 +2,9 @@ package com.mybible.mybible.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mybible.mybible.transaction.Transaction;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,10 +30,15 @@ public class Type {
     private Long typeId;
 
     @Column(
-            name = "description",
-            updatable = true
+            name = "description"
     )
     private String description;
+
+    @ColumnDefault("true")
+    @Column(
+            name = "status"
+    )
+    private Boolean status;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -46,9 +51,10 @@ public class Type {
     public Type() {
     }
 
-    public Type(Long typeId, String description) {
+    public Type(Long typeId, String description, boolean status) {
         this.typeId = typeId;
         this.description = description;
+        this.status = status;
     }
 
     public Long getTypeId() {
@@ -67,6 +73,14 @@ public class Type {
         this.description = description;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public Set<Transaction> getTransactions() {
         return transactions;
     }
@@ -80,6 +94,7 @@ public class Type {
         return "Type{" +
                 "typeId=" + typeId +
                 ", description='" + description + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

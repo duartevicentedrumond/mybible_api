@@ -64,6 +64,7 @@ public class Transaction {
     )
     @JsonIgnoreProperties({
             "description",
+            "status"
     })
     private Set<Type> types = new HashSet<>();
 
