@@ -36,9 +36,9 @@ public class Type {
 
     @ColumnDefault("true")
     @Column(
-            name = "status"
+            name = "active"
     )
-    private Boolean status;
+    private Boolean active;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -51,10 +51,10 @@ public class Type {
     public Type() {
     }
 
-    public Type(Long typeId, String description, boolean status) {
+    public Type(Long typeId, String description, boolean active) {
         this.typeId = typeId;
         this.description = description;
-        this.status = status;
+        this.active = active;
     }
 
     public Long getTypeId() {
@@ -73,12 +73,12 @@ public class Type {
         this.description = description;
     }
 
-    public boolean isStatus() {
-        return status;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Set<Transaction> getTransactions() {
@@ -94,7 +94,7 @@ public class Type {
         return "Type{" +
                 "typeId=" + typeId +
                 ", description='" + description + '\'' +
-                ", status=" + status +
+                ", active=" + active +
                 '}';
     }
 }
