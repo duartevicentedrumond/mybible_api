@@ -23,7 +23,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(
             value = "SELECT " +
                         "category.description, " +
-                        "SUM(amount) AS \"total\" " +
+                        "SUM(amount) AS \"total\", " +
+                        "category.active " +
                     "FROM \"subtransaction\" " +
                     "JOIN category ON \"subtransaction\".\"category_id\" = category.category_id " +
                     "JOIN \"transaction_subtransactions\" ON \"subtransaction\".\"subtransaction_id\" = \"transaction_subtransactions\".\"subtransaction_id\" " +

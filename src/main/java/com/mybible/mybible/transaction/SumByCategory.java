@@ -17,7 +17,16 @@ public class SumByCategory {
         this.sum = sum;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     private String category;
     private Double sum;
+    private Boolean active;
 
 }

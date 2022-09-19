@@ -121,6 +121,7 @@ public class TransactionController {
 
             new_category.setCategory(category[0].toString());
             new_category.setSum(sum);
+            new_category.setActive((Boolean) category[2]);
             listSumByCategory.add(new_category);
         });
 
