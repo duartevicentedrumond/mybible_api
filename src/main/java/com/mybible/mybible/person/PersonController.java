@@ -33,18 +33,14 @@ public class PersonController {
         allPeople.forEach( person -> {
 
             Date birthday = person.getBirthday();
+            Long age = computeAge(birthday);
+            person.setAge(age);
 
-            if (birthday != null ) {
-                LocalDate birthdayLocalDate = Instant.ofEpochMilli(birthday.getTime())
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
-                Long age = Long.valueOf(Period.between(birthdayLocalDate, currentDate).getYears());
-                person.setAge(age);
-            }
+            personService.updatePerson(person.getPersonId(), person);
 
         } );
 
-        return personService.getAllPerson();
+        return allPeople;
     }
 
     @RequestMapping("/{personId}")
@@ -60,6 +56,22 @@ public class PersonController {
     @DeleteMapping("/delete/{personId}")
     public void deletePerson(@PathVariable Long personId){
         personService.deletePerson(personId);
+    }
+
+    public Long computeAge(Date birthday) {
+
+        LocalDate today = LocalDate.now();
+
+        Long age = null;
+
+        if (birthday != null ) {
+            LocalDate birthdayLocalDate = Instant.ofEpochMilli(birthday.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            age = Long.valueOf(Period.between(birthdayLocalDate, today).getYears());
+        }
+
+        return age;
     }
 
 }
