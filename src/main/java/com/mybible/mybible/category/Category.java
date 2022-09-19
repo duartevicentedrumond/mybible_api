@@ -1,5 +1,7 @@
 package com.mybible.mybible.category;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -29,11 +31,19 @@ public class Category {
     )
     private String description;
 
+    @ColumnDefault("true")
+    @Column(
+            name = "active"
+    )
+    private Boolean active;
+
     public Category() {
     }
 
-    public Category(String description) {
+    public Category(Long categoryId, String description, Boolean active) {
+        this.categoryId = categoryId;
         this.description = description;
+        this.active = active;
     }
 
     public Long getCategoryId() {
@@ -52,11 +62,20 @@ public class Category {
         this.description = description;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "categoryId=" + categoryId +
                 ", description='" + description + '\'' +
+                ", active=" + active +
                 '}';
     }
 }
