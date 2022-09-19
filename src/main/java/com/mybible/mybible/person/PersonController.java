@@ -3,8 +3,12 @@ package com.mybible.mybible.person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -22,6 +26,24 @@ public class PersonController {
 
     @GetMapping("/getAll")
     public List<Person> getAllPerson(){
+
+        List<Person> allPeople = personService.getAllPerson();
+        LocalDate currentDate = LocalDate.now();
+
+        allPeople.forEach( person -> {
+
+            Date birthday = person.getBirthday();
+
+            if (birthday != null ) {
+                LocalDate birthdayLocalDate = Instant.ofEpochMilli(birthday.getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                Long age = Long.valueOf(Period.between(birthdayLocalDate, currentDate).getYears());
+                person.setAge(age);
+            }
+
+        } );
+
         return personService.getAllPerson();
     }
 

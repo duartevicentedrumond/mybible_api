@@ -1,9 +1,8 @@
 package com.mybible.mybible.person;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-
 import java.util.Date;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -28,26 +27,41 @@ public class Person {
     private Long personId;
 
     @Column(
-            name = "nickname",
-            updatable = true
+            name = "nickname"
     )
     private String nickname;
 
     @Column(
-            name = "full_name",
-            updatable = true,
-            nullable = true
+            name = "full_name"
     )
     private String fullName;
 
     @Column(
-            name = "birthday",
-            nullable = true
+            name = "birthday"
     )
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
+    @ColumnDefault("false")
+    @Column(
+            name = "starred"
+    )
+    private Boolean starred;
+
+    @Column(
+            name = "age"
+    )
+    private Long age;
+
     public Person() {
+    }
+
+    public Person(Long personId, String nickname, String fullName, Date birthday, Boolean starred, Long age) {
+        this.personId = personId;
+        this.nickname = nickname;
+        this.fullName = fullName;
+        this.birthday = birthday;
+        this.starred = starred;
+        this.age = age;
     }
 
     public Long getPersonId() {
@@ -82,6 +96,22 @@ public class Person {
         this.birthday = birthday;
     }
 
+    public Boolean getStarred() {
+        return starred;
+    }
+
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
+    }
+
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -89,6 +119,8 @@ public class Person {
                 ", nickname='" + nickname + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", birthday=" + birthday +
+                ", starred=" + starred +
+                ", age=" + age +
                 '}';
     }
 }
