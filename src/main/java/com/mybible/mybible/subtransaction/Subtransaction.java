@@ -44,7 +44,9 @@ public class Subtransaction {
     @JsonIgnoreProperties({
             "nickname",
             "fullName",
-            "birthday"
+            "birthday",
+            "age",
+            "starred"
     })
     private Person person;
 
