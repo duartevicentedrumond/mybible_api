@@ -1,60 +1,68 @@
-package com.mybible.mybible.subtransaction;
+package com.mybible.mybible.box;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mybible.mybible.box.Box;
 import com.mybible.mybible.building.Building;
-import com.mybible.mybible.category.Category;
 import com.mybible.mybible.furniture.Furniture;
 import com.mybible.mybible.item.Item;
-import com.mybible.mybible.person.Person;
 import com.mybible.mybible.room.Room;
 import com.mybible.mybible.section.Section;
+import com.mybible.mybible.subtransaction.Subtransaction;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Entity(name = "Subtransaction")
-public class Subtransaction {
+@Entity(name = "Box")
+public class Box {
 
     @Id
     @SequenceGenerator(
-            name = "subtransaction_sequence",
-            sequenceName = "subtransaction_sequence",
+            name = "box_sequence",
+            sequenceName = "box_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
-          strategy = SEQUENCE,
-          generator = "subtransaction_sequence"
+            strategy = SEQUENCE,
+            generator = "box_sequence"
     )
     @Column(
-            name = "subtransaction_id",
-            updatable = false,
+            name = "box_id",
             unique = true
     )
-    private Long subtransactionId;
+    private Long boxId;
 
-    @Column(
-            name = "amount",
-            nullable = false
+    @Column(name = "name")
+    private String name;
+
+    @ColumnDefault("true")
+    @Column(name = "active")
+    private Boolean active;
+
+    @Column(name = "since")
+    private Date since;
+
+    @Column(name = "until")
+    private Date until;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "box"
     )
-    private Double amount;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties({"description"})
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "person_id")
     @JsonIgnoreProperties({
-            "nickname",
-            "fullName",
-            "birthday",
-            "age",
-            "starred"
+            "amount",
+            "category",
+            "person",
+            "building",
+            "room",
+            "furniture",
+            "section",
+            "box",
+            "item"
     })
-    private Person person;
+    private Set<Subtransaction> subtransactions;
 
     @ManyToOne
     @JoinColumn(name = "building_id")
@@ -124,25 +132,10 @@ public class Subtransaction {
     })
     private Section section;
 
-    @ManyToOne
-    @JoinColumn(name = "box_id")
-    @JsonIgnoreProperties({
-            "name",
-            "location",
-            "active",
-            "since",
-            "until",
-            "subtransactions",
-            "building",
-            "room",
-            "furniture",
-            "section",
-            "items"
-    })
-    private Box box;
-
-    @ManyToOne
-    @JoinColumn(name = "item_id")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "box"
+    )
     @JsonIgnoreProperties({
             "name",
             "location",
@@ -156,54 +149,65 @@ public class Subtransaction {
             "section",
             "box"
     })
-    private Item item;
+    private Set<Item> items;
 
-    public Subtransaction() {
+    public Box() {
     }
 
-    public Subtransaction(Long subtransactionId, Double amount, Category category, Person person, Building building, Room room, Furniture furniture, Section section, Box box, Item item) {
-        this.subtransactionId = subtransactionId;
-        this.amount = amount;
-        this.category = category;
-        this.person = person;
-        this.building = building;
-        this.room = room;
-        this.furniture = furniture;
-        this.section = section;
-        this.box = box;
-        this.item = item;
+    public Box(Long boxId, String name, Boolean active, Date since, Date until) {
+        this.boxId = boxId;
+        this.name = name;
+        this.active = active;
+        this.since = since;
+        this.until = until;
     }
 
-    public Double getAmount() {
-        return amount;
+    public Long getBoxId() {
+        return boxId;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setBoxId(Long boxId) {
+        this.boxId = boxId;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getName() {
+        return name;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Person getPerson() {
-        return person;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
-    public Long getSubtransactionId() {
-        return subtransactionId;
+    public Date getSince() {
+        return since;
     }
 
-    public void setSubtransactionId(Long subtransactionId) {
-        this.subtransactionId = subtransactionId;
+    public void setSince(Date since) {
+        this.since = since;
+    }
+
+    public Date getUntil() {
+        return until;
+    }
+
+    public void setUntil(Date until) {
+        this.until = until;
+    }
+
+    public Set<Subtransaction> getSubtransactions() {
+        return subtransactions;
+    }
+
+    public void setSubtransactions(Set<Subtransaction> subtransactions) {
+        this.subtransactions = subtransactions;
     }
 
     public Building getBuilding() {
@@ -238,35 +242,29 @@ public class Subtransaction {
         this.section = section;
     }
 
-    public Box getBox() {
-        return box;
+    public Set<Item> getItems() {
+        return items;
     }
 
-    public void setBox(Box box) {
-        this.box = box;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 
     @Override
     public String toString() {
-        return "Subtransaction{" +
-                "subtransactionId=" + subtransactionId +
-                ", amount=" + amount +
-                ", category=" + category +
-                ", person=" + person +
+        return "Box{" +
+                "boxId=" + boxId +
+                ", name='" + name + '\'' +
+                ", active=" + active +
+                ", since=" + since +
+                ", until=" + until +
+                ", subtransactions=" + subtransactions +
                 ", building=" + building +
                 ", room=" + room +
                 ", furniture=" + furniture +
                 ", section=" + section +
-                ", box=" + box +
-                ", item=" + item +
+                ", items=" + items +
                 '}';
     }
 }
+
