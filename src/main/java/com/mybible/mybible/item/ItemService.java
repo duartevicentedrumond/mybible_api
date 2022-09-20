@@ -9,4 +9,5 @@ public interface ItemService {
     Item updateItem(Long itemId, Item item);
     List<Item> getAllItem();
     void deleteItem(Long itemId);
+    List<Object[]> getAllJoined();
 }

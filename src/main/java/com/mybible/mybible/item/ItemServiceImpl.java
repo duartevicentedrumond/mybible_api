@@ -35,4 +35,9 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Long itemId) {
         itemRepository.deleteById(itemId);
     }
+
+    @Override
+    public List<Object[]> getAllJoined() {
+        return itemRepository.findAllJoinedByOrderByname();
+    }
 }
