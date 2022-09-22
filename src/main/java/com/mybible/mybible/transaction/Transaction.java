@@ -1,6 +1,5 @@
 package com.mybible.mybible.transaction;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mybible.mybible.subtransaction.Subtransaction;
 import com.mybible.mybible.type.Type;
@@ -48,7 +47,6 @@ public class Transaction {
             name = "date",
             nullable = false
     )
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
 
     private Double totalAmount;

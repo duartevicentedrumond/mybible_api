@@ -24,8 +24,8 @@ public class Subtransaction {
             allocationSize = 1
     )
     @GeneratedValue(
-          strategy = SEQUENCE,
-          generator = "subtransaction_sequence"
+            strategy = SEQUENCE,
+            generator = "subtransaction_sequence"
     )
     @Column(
             name = "subtransaction_id",
@@ -58,24 +58,26 @@ public class Subtransaction {
 
     @ManyToOne
     @JoinColumn(name = "building_id")
-    @JsonIgnoreProperties({
-            "name",
-            "location",
-            "active",
-            "since",
-            "until",
-            "subtransactions",
-            "rooms",
-            "furnitures",
-            "sections",
-            "boxes",
-            "items"
-    })
+    @JsonIgnoreProperties(
+            value = {
+                    "name",
+                    "location",
+                    "active",
+                    "since",
+                    "until",
+                    "subtransactions",
+                    "rooms",
+                    "furnitures",
+                    "sections",
+                    "boxes",
+                    "items"
+            },
+            allowSetters = true)
     private Building building;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    @JsonIgnoreProperties({
+    @JsonIgnoreProperties(value = {
             "name",
             "location",
             "active",
@@ -87,12 +89,13 @@ public class Subtransaction {
             "sections",
             "boxes",
             "items"
-    })
+    },
+            allowSetters = true)
     private Room room;
 
     @ManyToOne
     @JoinColumn(name = "furniture_id")
-    @JsonIgnoreProperties({
+    @JsonIgnoreProperties(value = {
             "name",
             "location",
             "active",
@@ -104,58 +107,67 @@ public class Subtransaction {
             "sections",
             "boxes",
             "items"
-    })
+    },
+            allowSetters = true)
     private Furniture furniture;
 
     @ManyToOne
     @JoinColumn(name = "section_id")
-    @JsonIgnoreProperties({
-            "name",
-            "location",
-            "active",
-            "since",
-            "until",
-            "subtransactions",
-            "building",
-            "room",
-            "furniture",
-            "boxes",
-            "items"
-    })
+    @JsonIgnoreProperties(
+            value = {
+                    "name",
+                    "location",
+                    "active",
+                    "since",
+                    "until",
+                    "subtransactions",
+                    "building",
+                    "room",
+                    "furniture",
+                    "boxes",
+                    "items"
+            },
+            allowSetters = true)
     private Section section;
 
     @ManyToOne
     @JoinColumn(name = "box_id")
-    @JsonIgnoreProperties({
-            "name",
-            "location",
-            "active",
-            "since",
-            "until",
-            "subtransactions",
-            "building",
-            "room",
-            "furniture",
-            "section",
-            "items"
-    })
+    @JsonIgnoreProperties(
+            value = {
+                    "name",
+                    "location",
+                    "active",
+                    "since",
+                    "until",
+                    "subtransactions",
+                    "building",
+                    "room",
+                    "furniture",
+                    "section",
+                    "items"
+            },
+            allowSetters = true
+    )
     private Box box;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
-    @JsonIgnoreProperties({
-            "name",
-            "location",
-            "active",
-            "since",
-            "until",
-            "subtransactions",
-            "building",
-            "room",
-            "furniture",
-            "section",
-            "box"
-    })
+    @JsonIgnoreProperties(
+            value = {
+                    "name",
+                    "location",
+                    "active",
+                    "since",
+                    "until",
+                    "subtransactions",
+                    "building",
+                    "room",
+                    "furniture",
+                    "section",
+                    "box"
+            },
+            allowSetters = true
+    )
     private Item item;
 
     public Subtransaction() {
