@@ -2,7 +2,6 @@ package com.mybible.mybible.gift;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,13 +26,13 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
                         "gift.from, " +
                         "gift.value, " +
                         "person.nickname, " +
-                        "gifttype.description AS gifttype " +
+                        "gifttype.description AS gifttype, " +
+                        "person.person_id " +
                     "FROM gift " +
                     "JOIN gift_people ON gift.gift_id = gift_people.gift_id " +
                     "JOIN person ON gift_people.person_id = person.person_id " +
-                    "JOIN gifttype ON gift.gifttype_id = gifttype.gifttype_id " +
-                    "WHERE person.person_id = :personId",
+                    "JOIN gifttype ON gift.gifttype_id = gifttype.gifttype_id " ,
             nativeQuery = true
     )
-    List<Object[]> getGiftByPerson(@Param("personId") Long personId);
+    List<Object[]> getGiftByPerson();
 }

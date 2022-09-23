@@ -42,11 +42,11 @@ public class GiftController {
         giftService.deleteGift(giftId);
     }
 
-    @GetMapping("/getGiftByPerson/{personId}")
-    public List<GiftByPerson> getGiftByPerson(@PathVariable Long personId){
+    @GetMapping("/getGiftByPerson")
+    public List<GiftByPerson> getGiftByPerson(){
 
         List<GiftByPerson> listgiftByPerson = new ArrayList<>();
-        List<Object[]> giftByPerson = giftService.getGiftByPerson(personId);
+        List<Object[]> giftByPerson = giftService.getGiftByPerson();
 
         giftByPerson.forEach(gift ->{
 
@@ -58,6 +58,7 @@ public class GiftController {
             new_gift.setValue((Double) gift[4]);
             new_gift.setNickname((String) gift[5]);
             new_gift.setGifttypeDescription((String) gift[6]);
+            new_gift.setPersonId(((BigInteger) gift[7]).longValue());
             listgiftByPerson.add(new_gift);
         });
 

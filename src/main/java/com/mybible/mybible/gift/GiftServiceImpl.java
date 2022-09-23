@@ -38,8 +38,8 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public List<Object[]> getGiftByPerson(Long personId) {
-        return giftRepository.getGiftByPerson(personId);
+    public List<Object[]> getGiftByPerson() {
+        return giftRepository.getGiftByPerson();
     }
 
 }

@@ -11,6 +11,7 @@ public class GiftByPerson {
     private Double value;
     private String nickname;
     private String gifttypeDescription;
+    private Long personId;
 
     public Long getGiftId() {
         return giftId;
@@ -66,5 +67,13 @@ public class GiftByPerson {
 
     public void setGifttypeDescription(String gifttypeDescription) {
         this.gifttypeDescription = gifttypeDescription;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 }
