@@ -91,7 +91,7 @@ public class Type {
 
     @Override
     public String toString() {
-        return "Type{" +
+        return "Gifttype{" +
                 "typeId=" + typeId +
                 ", description='" + description + '\'' +
                 ", active=" + active +

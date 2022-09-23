@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +116,8 @@ public class TransactionController {
 
             SumByCategory new_category = new SumByCategory();
 
-            //round sum to two decimal places
-            Double sum = (Double) category[1];
-            sum = Double.valueOf(Math.round(sum*100))/100;
-
             new_category.setCategory(category[0].toString());
-            new_category.setSum(sum);
+            new_category.setSum(((BigDecimal) category[1]).doubleValue());
             new_category.setActive((Boolean) category[2]);
             listSumByCategory.add(new_category);
         });

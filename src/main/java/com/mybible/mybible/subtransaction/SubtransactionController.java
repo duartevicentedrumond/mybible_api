@@ -1,6 +1,5 @@
 package com.mybible.mybible.subtransaction;
 
-import com.mybible.mybible.building.Building;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +16,6 @@ public class SubtransactionController {
 
     @PostMapping("/add")
     public Subtransaction add(@RequestBody Subtransaction subtransaction){
-
-        Building building = subtransaction.getBuilding();
-        System.out.println(building);
-
         return subtransactionService.saveSubtransaction(subtransaction);
     }
 
