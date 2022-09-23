@@ -37,4 +37,9 @@ public class GiftServiceImpl implements GiftService {
         giftRepository.deleteById(giftId);
     }
 
+    @Override
+    public List<Object[]> getGiftByPerson(Long personId) {
+        return giftRepository.getGiftByPerson(personId);
+    }
+
 }

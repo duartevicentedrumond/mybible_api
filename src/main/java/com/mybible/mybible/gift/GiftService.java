@@ -9,4 +9,5 @@ public interface GiftService {
     Optional<Gift> getGift(Long giftId);
     Gift updateGift(Long giftId, Gift gift);
     void deleteGift(Long giftId);
+    List<Object[]> getGiftByPerson(Long personId);
 }

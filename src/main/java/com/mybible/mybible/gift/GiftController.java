@@ -3,6 +3,9 @@ package com.mybible.mybible.gift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +40,28 @@ public class GiftController {
     @DeleteMapping("/delete/{giftId}")
     public void deleteGift(@PathVariable Long giftId){
         giftService.deleteGift(giftId);
+    }
+
+    @GetMapping("/getGiftByPerson/{personId}")
+    public List<GiftByPerson> getGiftByPerson(@PathVariable Long personId){
+
+        List<GiftByPerson> listgiftByPerson = new ArrayList<>();
+        List<Object[]> giftByPerson = giftService.getGiftByPerson(personId);
+
+        giftByPerson.forEach(gift ->{
+
+            GiftByPerson new_gift = new GiftByPerson();
+            new_gift.setGiftId(((BigInteger) gift[0]).longValue());
+            new_gift.setDate((Date) gift[1]);
+            new_gift.setDescription((String) gift[2]);
+            new_gift.setFrom((Boolean) gift[3]);
+            new_gift.setValue((Double) gift[4]);
+            new_gift.setNickname((String) gift[5]);
+            new_gift.setGifttypeDescription((String) gift[6]);
+            listgiftByPerson.add(new_gift);
+        });
+
+        return listgiftByPerson;
+
     }
 }
