@@ -23,7 +23,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(
             value = "SELECT " +
                         "category.description, " +
-                        "SUM(ROUND(CAST(amount AS NUMERIC),2)) AS \"total\", " +
+                        "ROUND(SUM(CAST(subtransaction.amount AS NUMERIC)),2) AS \"total\", " +
                         "category.active " +
                     "FROM \"subtransaction\" " +
                     "JOIN category ON \"subtransaction\".\"category_id\" = category.category_id " +
@@ -68,7 +68,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         "SELECT " +
                             "EXTRACT(YEAR FROM date) as year, " +
                             "EXTRACT(MONTH FROM date) as month, " +
-                            "SUM(subtransaction.amount) as total " +
+                            "ROUND(SUM(CAST(subtransaction.amount AS NUMERIC)),2) as total " +
                             "FROM \"transaction\" " +
                         "JOIN transaction_subtransactions ON \"transaction_subtransactions\".transaction_id = \"transaction\".\"transaction_id\" " +
                         "JOIN subtransaction ON subtransaction.subtransaction_id = transaction_subtransactions.subtransaction_id " +
@@ -90,13 +90,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             value = "SELECT " +
                         "person.person_id, " +
                         "person.nickname, " +
-                        "SUM(subtransaction.amount) as debt " +
+                        "ROUND(SUM(CAST(subtransaction.amount AS NUMERIC)),2) as debt " +
                     "FROM " +
                         "subtransaction " +
                     "JOIN person ON person.person_id = subtransaction.person_id " +
                     "WHERE subtransaction.person_id != 0 " +
                     "GROUP BY person.person_id " +
-                    "Having SUM(subtransaction.amount) != 0 " +
+                    "Having ROUND(SUM(CAST(subtransaction.amount AS NUMERIC)),2) != 0 " +
                     "ORDER BY person.nickname ASC",
             nativeQuery = true
     )

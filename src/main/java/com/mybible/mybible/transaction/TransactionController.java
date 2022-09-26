@@ -137,13 +137,9 @@ public class TransactionController {
 
             SumByMonth new_month = new SumByMonth();
 
-            //round sum to two decimal places
-            Double sum = (Double) month[2];
-            sum = Double.valueOf(Math.round(sum*100))/100;
-
             new_month.setYear((Double) month[0]);
             new_month.setMonth((Double) month[1]);
-            new_month.setSum(sum);
+            new_month.setSum(((BigDecimal) month[2]).doubleValue());
             listSumByMonth.add(new_month);
         });
 
@@ -161,13 +157,9 @@ public class TransactionController {
 
             SumByDebt new_debtor = new SumByDebt();
 
-            //round sum to two decimal places
-            Double sum = (Double) debtor[2];
-            sum = Double.valueOf(Math.round(sum*100))/100;
-
             new_debtor.setPerson_id(((BigInteger) debtor[0]).longValue());
             new_debtor.setNickname((String) debtor[1]);
-            new_debtor.setDebt(sum);
+            new_debtor.setDebt(((BigDecimal) debtor[2]).doubleValue());
             listSumByDebt.add(new_debtor);
         });
 
