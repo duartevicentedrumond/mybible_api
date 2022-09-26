@@ -185,9 +185,9 @@ public class TransactionController {
 
             SubtransactionByTransaction new_subtransaction = new SubtransactionByTransaction();
 
-            new_subtransaction.setSubtransaction_id(((BigInteger) subtransaction[0]).longValue());
+            new_subtransaction.setSubtransactionId(((BigInteger) subtransaction[0]).longValue());
             new_subtransaction.setAmount((Double) subtransaction[1]);
-            new_subtransaction.setCustom_id((String) subtransaction[2]);
+            new_subtransaction.setCustomId((String) subtransaction[2]);
             new_subtransaction.setDate((Date) subtransaction[3]);
             new_subtransaction.setDescription((String) subtransaction[4]);
             listSubtransactionByTransaction.add(new_subtransaction);

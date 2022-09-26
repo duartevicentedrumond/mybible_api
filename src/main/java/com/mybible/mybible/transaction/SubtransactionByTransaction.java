@@ -3,18 +3,26 @@ package com.mybible.mybible.transaction;
 import java.util.Date;
 
 public class SubtransactionByTransaction {
-    private Long subtransaction_id;
+    private Long subtransactionId;
     private Double amount;
-    private String custom_id;
+    private String customId;
     private Date date;
     private String description;
 
-    public Long getSubtransaction_id() {
-        return subtransaction_id;
+    public Long getSubtransactionId() {
+        return subtransactionId;
     }
 
-    public void setSubtransaction_id(Long subtransaction_id) {
-        this.subtransaction_id = subtransaction_id;
+    public void setSubtransactionId(Long subtransactionId) {
+        this.subtransactionId = subtransactionId;
+    }
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
     }
 
     public Double getAmount() {
@@ -23,14 +31,6 @@ public class SubtransactionByTransaction {
 
     public void setAmount(Double amount) {
         this.amount = amount;
-    }
-
-    public String getCustom_id() {
-        return custom_id;
-    }
-
-    public void setCustom_id(String custom_id) {
-        this.custom_id = custom_id;
     }
 
     public Date getDate() {

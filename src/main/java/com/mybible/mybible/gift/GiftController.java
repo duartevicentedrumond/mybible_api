@@ -19,6 +19,9 @@ public class GiftController {
 
     @PostMapping("/add")
     public Gift add(@RequestBody Gift gift){
+
+        System.out.println(gift);
+
         return giftService.saveGift(gift);
     }
 
