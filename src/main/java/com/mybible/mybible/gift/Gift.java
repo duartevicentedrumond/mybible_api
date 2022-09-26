@@ -9,7 +9,7 @@ import com.mybible.mybible.item.Item;
 import com.mybible.mybible.person.Person;
 import com.mybible.mybible.room.Room;
 import com.mybible.mybible.section.Section;
-import com.mybible.mybible.transaction.Transaction;
+import com.mybible.mybible.subtransaction.Subtransaction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -55,20 +55,22 @@ public class Gift {
     private Gifttype gifttype;
 
     @OneToOne
-    @JoinColumn(name = "transaction_id")
+    @JoinColumn(name = "subtransaction_id")
     @JsonIgnoreProperties(
             value= {
-                    "description",
-                    "date",
-                    "totalAmount",
-                    "types",
-                    "transactionParent",
-                    "transactionChildren",
-                    "subtransactions"
+                    "amount",
+                    "category",
+                    "person",
+                    "building",
+                    "room",
+                    "furniture",
+                    "section",
+                    "box",
+                    "item"
             },
             allowSetters = true
             )
-    private Transaction transaction;
+    private Subtransaction subtransaction;
 
     @ManyToMany
     @JoinTable(
@@ -199,14 +201,14 @@ public class Gift {
     public Gift() {
     }
 
-    public Gift(Long giftId, Double value, Date date, String description, Boolean from, Gifttype gifttype, Transaction transaction, Set<Person> people, Building building, Room room, Furniture furniture, Section section, Box box, Item item) {
+    public Gift(Long giftId, Double value, Date date, String description, Boolean from, Gifttype gifttype, Subtransaction subtransaction, Set<Person> people, Building building, Room room, Furniture furniture, Section section, Box box, Item item) {
         this.giftId = giftId;
         this.value = value;
         this.date = date;
         this.description = description;
         this.from = from;
         this.gifttype = gifttype;
-        this.transaction = transaction;
+        this.subtransaction = subtransaction;
         this.people = people;
         this.building = building;
         this.room = room;
@@ -264,12 +266,12 @@ public class Gift {
         this.gifttype = gifttype;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Subtransaction getSubtransaction() {
+        return subtransaction;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setSubtransaction(Subtransaction subtransaction) {
+        this.subtransaction = subtransaction;
     }
 
     public Set<Person> getPeople() {
@@ -337,7 +339,7 @@ public class Gift {
                 ", description='" + description + '\'' +
                 ", from=" + from +
                 ", gifttype=" + gifttype +
-                ", transaction=" + transaction +
+                ", subtransaction=" + subtransaction +
                 ", people=" + people +
                 ", building=" + building +
                 ", room=" + room +

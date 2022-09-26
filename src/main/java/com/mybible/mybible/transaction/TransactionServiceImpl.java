@@ -105,4 +105,9 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Object[]> getSumByDebt() {
         return transactionRepository.getSumByDebt();
     }
+
+    @Override
+    public List<Object[]> getSubtransactionByTransaction() {
+        return transactionRepository.getSubtransactionByTransaction();
+    }
 }

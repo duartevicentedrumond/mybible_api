@@ -101,4 +101,18 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             nativeQuery = true
     )
     List<Object[]> getSumByDebt();
+
+    @Query(
+            value = "SELECT " +
+                        "subtransaction.subtransaction_id, " +
+                        "subtransaction.amount, " +
+                        "transaction.custom_id, " +
+                        "transaction.date, " +
+                        "transaction.description " +
+                    "FROM transaction " +
+                    "JOIN transaction_subtransactions ON transaction.transaction_id = transaction_subtransactions.transaction_id " +
+                    "JOIN subtransaction ON transaction_subtransactions.subtransaction_id = subtransaction.subtransaction_id",
+            nativeQuery = true
+    )
+    List<Object[]> getSubtransactionByTransaction();
 }

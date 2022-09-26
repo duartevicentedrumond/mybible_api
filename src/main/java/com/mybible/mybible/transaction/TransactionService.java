@@ -14,4 +14,5 @@ public interface TransactionService {
     String getLastTransactionByOrderByYear(Date date);
     List<Object[]> getSumByMonth();
     List<Object[]> getSumByDebt();
+    List<Object[]> getSubtransactionByTransaction();
 }

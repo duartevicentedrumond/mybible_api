@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -171,6 +172,28 @@ public class TransactionController {
         });
 
         return listSumByDebt;
+
+    }
+
+    @GetMapping("/getSubtransactionByTransaction")
+    public List<SubtransactionByTransaction> getSubtransactionByTransaction(){
+
+        List<SubtransactionByTransaction> listSubtransactionByTransaction = new ArrayList<>();
+        List<Object[]> subtransactionByTransaction = transactionService.getSubtransactionByTransaction();
+
+        subtransactionByTransaction.forEach(subtransaction ->{
+
+            SubtransactionByTransaction new_subtransaction = new SubtransactionByTransaction();
+
+            new_subtransaction.setSubtransaction_id(((BigInteger) subtransaction[0]).longValue());
+            new_subtransaction.setAmount((Double) subtransaction[1]);
+            new_subtransaction.setCustom_id((String) subtransaction[2]);
+            new_subtransaction.setDate((Date) subtransaction[3]);
+            new_subtransaction.setDescription((String) subtransaction[4]);
+            listSubtransactionByTransaction.add(new_subtransaction);
+        });
+
+        return listSubtransactionByTransaction;
 
     }
 
