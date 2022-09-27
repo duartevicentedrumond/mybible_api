@@ -8,6 +8,7 @@ public class SubtransactionByTransaction {
     private String customId;
     private Date date;
     private String description;
+    private String nickname;
 
     public Long getSubtransactionId() {
         return subtransactionId;
@@ -47,5 +48,13 @@ public class SubtransactionByTransaction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

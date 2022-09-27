@@ -108,10 +108,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         "subtransaction.amount, " +
                         "transaction.custom_id, " +
                         "transaction.date, " +
-                        "transaction.description " +
+                        "transaction.description, " +
+                        "person.nickname " +
                     "FROM transaction " +
                     "JOIN transaction_subtransactions ON transaction.transaction_id = transaction_subtransactions.transaction_id " +
-                    "JOIN subtransaction ON transaction_subtransactions.subtransaction_id = subtransaction.subtransaction_id",
+                    "JOIN subtransaction ON transaction_subtransactions.subtransaction_id = subtransaction.subtransaction_id " +
+                    "JOIN person ON subtransaction.person_id = person.person_id " +
+                    "ORDER BY transaction.date DESC",
             nativeQuery = true
     )
     List<Object[]> getSubtransactionByTransaction();

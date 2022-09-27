@@ -182,6 +182,7 @@ public class TransactionController {
             new_subtransaction.setCustomId((String) subtransaction[2]);
             new_subtransaction.setDate((Date) subtransaction[3]);
             new_subtransaction.setDescription((String) subtransaction[4]);
+            new_subtransaction.setNickname((String) subtransaction[5]);
             listSubtransactionByTransaction.add(new_subtransaction);
         });
 
