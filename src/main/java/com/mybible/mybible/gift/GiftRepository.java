@@ -31,7 +31,8 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
                     "FROM gift " +
                     "JOIN gift_people ON gift.gift_id = gift_people.gift_id " +
                     "JOIN person ON gift_people.person_id = person.person_id " +
-                    "JOIN gifttype ON gift.gifttype_id = gifttype.gifttype_id " ,
+                    "JOIN gifttype ON gift.gifttype_id = gifttype.gifttype_id " +
+                    "ORDER BY gift.date DESC " ,
             nativeQuery = true
     )
     List<Object[]> getGiftByPerson();
